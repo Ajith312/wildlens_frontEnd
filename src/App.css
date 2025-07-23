@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+* {
+  font-weight: 400;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+:root {
+  --root-height: 100vh;
+
+  --sidebar-y-padding: 1rem;
+  --sidebar-width: 21rem;
+  --sidebar-header-height: 6rem;
+  --sidebar-body-padding: .9rem .9rem;
+  --sidebar-body-margin: 0 0 0;
+  --sidebar-background-color: #ffffff;
+  --sidebar-border: 1px solid rgba(236, 236, 236, 0.88);
+
+  --btn-brand-bg-color: #FFF;
+  --btn-brand-border-color: black;
+  --btn-brand-color: white;
+
+  --btn-brand-outerLayer-bg-color: white;
+  --btn-brand-outerLayer-border-color: black;
+  --btn-brand-outerLayer-color: black;
+
+  --header-height: 5.5rem;
+  --header-padding-y: 0rem 0;
+  --header-border: 1px solid #F3F3F3;
+  --header-card-background-color: #FFF;
+
+  --home-main-content-bg: #F1F1FF;
+  --home-main-content-padding: 3rem 0 3rem 0;
+
+  --main-background-color: #70e4aa;
+  --main-content-padding-y: .7rem 0rem .4rem 0rem;
+
+  --page-main-content-padding-y: 1rem .2rem;
+
+  --main-body-height: 88vh
+}
+
+.main_bg {
+  background-color: var(--main-background-color);
+}
+.row {
+  --bs-gutter-x: 0rem !important;
+  --bs-gutter-y: 0 !important;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 4px;
+  background-color: #aaa;
+}
+
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 12px;
+  background: #d82d2d;
+}
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+  /* user-select: none; */
+}

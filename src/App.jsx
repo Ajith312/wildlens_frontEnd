@@ -1,0 +1,39 @@
+import { Routes, Route } from 'react-router-dom'
+import InitializeProjectSetup from 'Views/InitializeProjectSetup'
+import Login from 'Views/Auth/Login'
+import UserAuth from 'Views/UserAuth'
+import Home from 'Views/Pages/Home'
+import { ToastContainer } from 'react-toastify'
+import NotFound from 'Views/Pages/NotFound'
+import Register from 'Views/Auth/Register'
+import AccountActivation from 'Views/Auth/AccountActivation'
+import ChangePassword from 'Views/Auth/ChangePassword'
+import ForgotPassword from 'Views/Auth/ForgotPassword'
+
+function App() {
+
+  return (
+    <>
+      <ToastContainer
+        theme='light'
+        pauseOnHover
+        closeOnClick
+      />
+      <Routes>
+        <Route element={<InitializeProjectSetup />}>
+          <Route path='/' element={<Login />} />
+          <Route path='/signup' element={<Register />} />
+          <Route path='/account-activation' element={<AccountActivation />} />
+          <Route path='forgot-password' element={<ForgotPassword />} />
+          <Route path='/change-password' element={<ChangePassword />} />
+          <Route path='user' element={<UserAuth />}>
+            <Route path='home' element={<Home />} />
+          </Route>
+          <Route path='*' element={<NotFound />} />
+        </Route>
+      </Routes>
+    </>
+  )
+}
+
+export default App
