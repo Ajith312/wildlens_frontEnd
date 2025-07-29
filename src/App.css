@@ -56,6 +56,15 @@
   background-color: #aaa;
 }
 
+::-webkit-scrollbar-thumb {
+  background-color: #36B864;
+  border-radius: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
@@ -64,10 +73,6 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-::-webkit-scrollbar-thumb {
-  border-radius: 12px;
-  background: #d82d2d;
-}
 body {
   margin: 0;
   -webkit-font-smoothing: antialiased;

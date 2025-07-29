@@ -11,3 +11,172 @@
 .auth-nav-text a{
   text-decoration: none !important;
 }
+.footerBtn:hover{
+  color: white !important;
+  font-weight: bold;
+}
+
+.brand-color{
+  background-color: #63AB45 !important;
+  color: #fff !important;
+}
+a{
+  text-decoration: none !important;
+}
+.homepage-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1051;
+  background-color: #d1e7dd !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.nav-menu-content a {
+  font-size: 16px !important;
+  text-decoration: none !important;
+  font-weight: 600 !important;
+  color: black !important;
+}
+.nav-menu-content a:hover{
+  color: rgba(6, 193, 102, 0.831) !important;
+  text-decoration: underline !important;
+}
+.custom-offcanvas {
+  z-index: 1055 !important;
+}
+.offcanvas-backdrop {
+  z-index: 1054 !important;
+}
+
+
+li{
+  list-style-type: none !important;
+}
+.coverImageContainer{
+  height: 55vh !important;
+  overflow: hidden !important;
+
+}
+.coverImage {
+  display: block;
+  object-fit: cover;
+}
+
+.coverText {
+  position: absolute;
+  z-index: 1;
+  font-size: 5rem !important;
+  font-weight: 900;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+.aboutBoxImage Img{
+  width: 100%;
+  height: auto;
+}
+.travelGuideCard{
+  height: 40vh;
+}
+.travelGuideImg img{
+  object-fit:contain;
+  object-position: center;
+  background-repeat: no-repeat;
+}
+.card{
+  border: none !important;
+ box-shadow: 0px 0px 10px 5px rgb(228, 229, 230);
+}
+
+.tour-card-box {
+  position: relative;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+ 
+}
+.tour-card{
+  box-shadow: 0px 0px 20px 3px lightgrey !important;
+  border-radius: 15px !important;
+}
+.card-box{
+  border: none !important;
+  box-shadow: 0px 0px 20px 5px lightblue !important;
+}
+.tour-card-box {
+  transition: transform 0.3s ease;
+}
+
+.tour-card-box:hover {
+  transform: translateY(-10px);
+}
+
+.GalleryCard{
+  height: 50vh !important;
+ 
+}
+.GalleryCard img{
+  object-fit: cover !important;
+}
+.galleryText{
+  color: #087e2c;
+  font-size: 45px;
+}
+
+.profile-nav{
+  background-color: #329b4a !important;
+
+}
+textarea {
+  resize: none !important;
+}
+
+/* Carousel Styles */
+.carousel-container {
+  height: 80vh;
+  max-height: 600px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.carousel-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.carousel-caption {
+  position: absolute;
+  bottom: 5% !important;
+  left: 50% !important;
+  transform: translateX(-50%);
+  text-align: center;
+  width: 80%;
+  max-width: 800px;
+}
+
+.carousel-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.carousel-text {
+  font-size: 1.25rem;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .carousel-container {
+    height: 60vh;
+  }
+  
+  .carousel-title {
+    font-size: 1.8rem;
+  }
+  
+  .carousel-text {
+    font-size: 1rem;
+  }
+}
+
