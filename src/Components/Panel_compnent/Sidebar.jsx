@@ -19,34 +19,6 @@ const Sidebar = ({
     footerClickFunction
 }) => {
     const navigate = useCustomNavigate();
-
-    // useEffect(() => {
-    //     if (window.location.pathname === "/dashboard" || window.location.pathname === "/dashboard/") {
-    //         switch (user_role) {
-    //             case "Super Admin":
-    //                 navigate("/dashboard/home")
-    //                 break;
-
-    //             case "admin":
-    //             case "Admin":
-    //                 navigate("/dashboard/home")
-    //                 break;
-
-    //             case "Employee":
-    //                 navigate("/dashboard/services/insurance")
-    //                 break;
-
-    //             case "SEO Specialist":
-    //                 navigate("/dashboard/blog")
-    //                 break;
-
-    //             default:
-    //                 break;
-    //         }
-    //     }
-
-    // }, [])
-
     const hanldeButton = (v) => {
         return <>
             <div className="col-3 pb-1 text-center">
@@ -61,7 +33,7 @@ const Sidebar = ({
     const headerFun = () => {
         return <React.Fragment>
             <div className='w-100'>
-                <h5>Header name</h5>
+                <h5>WildLens Tour</h5>
             </div>
         </React.Fragment>
     }
@@ -133,7 +105,7 @@ const Sidebar = ({
             <OffCanvas
                 offCanvasShow={offCanvasShow}
                 offcanvasPlacement="start"
-                offcanvasClassname="rounded border-0 sidebar offcanvas-sidebar"
+                offcanvasClassname="rounded border-0 bg-info sidebar offcanvas-sidebar"
                 handleCanvasOpenOrClose={handleCanvasOpenOrClose}
                 canvasHeader={headerFun('198px', '33px', companyLogo)}
                 offcanvasHeaderClassname="sidebar-header"

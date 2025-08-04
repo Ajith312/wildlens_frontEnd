@@ -1,4 +1,4 @@
-import { update_login_data, updateLoginResponse, updateRegisterResponse, updateToastMessage } from "Redux/Slice/Common.Slice";
+import { update_login_data, updateCanvasShow, updateLoginResponse, updateRegisterResponse, updateToastMessage } from "Redux/Slice/Common.Slice";
 import axios from "axios";
 import Cookies from "js-cookie";
 const BASE_URl = import.meta.env.VITE_APP_API_URl;
@@ -6,6 +6,10 @@ const BASE_URl = import.meta.env.VITE_APP_API_URl;
 export const handleRegisterCredentials = (value) => (dispatch) => {
     dispatch(update_login_data(value));
   };
+  export const handleUpdateCanvasShow = (dispatch) => {
+    dispatch(updateCanvasShow())
+}
+
 
 export const handleLogin = ({payload,navigate}) => async (dispatch) => {
     try {

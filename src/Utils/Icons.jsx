@@ -26,6 +26,24 @@ const historyIcon = <svg xmlns="http://www.w3.org/2000/svg" width="20" height="2
 <path d="M8 1a7 7 0 1 0 4.95 11.95l.707.707A8.001 8.001 0 1 1 8 0z"/>
 <path d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5"/>
 </svg>
+const dashboardIcon = <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+<path d="M3 6.5C3 5.43913 3.42143 4.42172 4.17157 3.67157C4.92172 2.92143 5.93913 2.5 7 2.5C8.06087 2.5 9.07828 2.92143 9.82843 3.67157C10.5786 4.42172 11 5.43913 11 6.5C11 7.56087 10.5786 8.57828 9.82843 9.32843C9.07828 10.0786 8.06087 10.5 7 10.5C5.93913 10.5 4.92172 10.0786 4.17157 9.32843C3.42143 8.57828 3 7.56087 3 6.5ZM14 17.5C14 16.4391 14.4214 15.4217 15.1716 14.6716C15.9217 13.9214 16.9391 13.5 18 13.5C19.0609 13.5 20.0783 13.9214 20.8284 14.6716C21.5786 15.4217 22 16.4391 22 17.5C22 18.5609 21.5786 19.5783 20.8284 20.3284C20.0783 21.0786 19.0609 21.5 18 21.5C16.9391 21.5 15.9217 21.0786 15.1716 20.3284C14.4214 19.5783 14 18.5609 14 17.5ZM22 6.5C22 4.614 22 3.672 21.414 3.086C20.828 2.5 19.886 2.5 18 2.5C16.114 2.5 15.172 2.5 14.586 3.086C14 3.672 14 4.614 14 6.5C14 8.386 14 9.328 14.586 9.914C15.172 10.5 16.114 10.5 18 10.5C19.886 10.5 20.828 10.5 21.414 9.914C22 9.328 22 8.386 22 6.5ZM11 17.5C11 15.614 11 14.672 10.414 14.086C9.828 13.5 8.886 13.5 7 13.5C5.114 13.5 4.172 13.5 3.586 14.086C3 14.672 3 15.614 3 17.5C3 19.386 3 20.328 3.586 20.914C4.172 21.5 5.114 21.5 7 21.5C8.886 21.5 9.828 21.5 10.414 20.914C11 20.328 11 19.386 11 17.5Z" stroke="#A3A3A3" strokeWidth="1.5" />
+</svg>
+
+const logoutIcon = 
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+<path d="M8.90039 7.56023C9.21039 3.96023 11.0604 2.49023 15.1104 2.49023H15.2404C19.7104 2.49023 21.5004 4.28023 21.5004 8.75023V15.2702C21.5004 19.7402 19.7104 21.5302 15.2404 21.5302H15.1104C11.0904 21.5302 9.24039 20.0802 8.91039 16.5402" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M2 12H14.88" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12.6504 8.65039L16.0004 12.0004L12.6504 15.3504" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+const menuIcon  =<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
+</svg>
+
+const moreIcon = <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+<path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+</svg>
 
 const Icons = {
     profileIcon,
@@ -33,7 +51,11 @@ const Icons = {
     notificationIcon,
     settingsIcon,
     cartIcon,
-    historyIcon
+    historyIcon,
+    dashboardIcon,
+    logoutIcon,
+    menuIcon,
+    moreIcon
 
     
 }

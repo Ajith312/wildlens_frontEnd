@@ -33,7 +33,7 @@ a{
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 .nav-menu-content a {
-  font-size: 16px !important;
+  font-size: 18px !important;
   text-decoration: none !important;
   font-weight: 600 !important;
   color: black !important;
@@ -66,7 +66,7 @@ li{
 .coverText {
   position: absolute;
   z-index: 1;
-  font-size: 5rem !important;
+  font-size: 4rem !important;
   font-weight: 900;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
@@ -117,7 +117,7 @@ li{
 }
 .galleryText{
   color: #087e2c;
-  font-size: 45px;
+  font-size: 3rem;
 }
 
 .profile-nav{
@@ -178,5 +178,110 @@ textarea {
   .carousel-text {
     font-size: 1rem;
   }
+  .coverText{
+    font-size: 3rem !important;
+
+  }
 }
+
+/* Dashboard styles */
+
+.main_rendering_contents_height {
+  background-color: var(--main-background-color);
+  height: var(--root-height);
+  overflow: hidden;
+}
+.main {
+  height: calc(var(--root-height) - var(--header-height));
+  padding-top: 1rem;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+/* Custom tab styling */
+.custom-tabs {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.custom-tabs .nav-link {
+  color: #6c757d;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  font-weight: 500;
+  position: relative;
+  margin-right: 0.5rem;
+  background: none;
+}
+
+.custom-tabs .nav-link:hover {
+  color: #0d6efd;
+  background-color: rgba(13, 110, 253, 0.05);
+}
+
+.custom-tabs .nav-link.active {
+  color: #0d6efd;
+  background-color: transparent;
+  border-bottom: 2px solid #0d6efd;
+}
+
+.custom-tabs .nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #0d6efd;
+}
+
+.badge-sm {
+  font-size: 0.7em;
+  padding: 0.35em 0.65em;
+}
+
+img.rounded-circle {
+  object-fit: cover;
+}
+
+.text-muted, small {
+  font-size: 0.875rem;
+}
+
+/* Add this to your global CSS file */
+.table-responsive-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 1rem;
+  background: white;
+  border-radius: 0.375rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+/* For the DataTable component */
+.rdt_Table {
+  min-width: 600px; /* Minimum width before scrolling kicks in */
+}
+
+/* For mobile devices */
+@media (max-width: 767.98px) {
+  .bookingHeaderBox {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .bookingHeaderBtn {
+    width: 100% !important;
+    justify-content: flex-start !important;
+  }
+}
+
+.filterTabBtn{
+  background-color: white;
+  padding: 5px 7px;
+  border-radius: 5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
 

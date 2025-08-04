@@ -22,16 +22,22 @@ import ProfileCart from 'Views/Pages/ProfileCart'
 import ProfileNotification from 'Views/Pages/ProfileNotification'
 import ProfileSettings from 'Views/Pages/ProfileSettings'
 import TourDetails from 'Views/Pages/TourDetails'
+import AdminAuth from 'Views/Others/AdminAuth'
+import AdminLayout from 'Views/Others/AdminLayout'
+import AdminHome from 'Views/Admin/AdminHome'
+import Bookings from 'Views/Admin/Bookings'
+import Packages from 'Views/Admin/Packages'
+import Users from 'Views/Admin/Users'
+import Settings from 'Views/Admin/Settings'
+import AdminTourDetails from 'Views/Admin/AdminTourDetails'
+import UserDetails from 'Views/Admin/UserDetails'
+import AddTourForm from 'Views/Admin/AddTour'
 
 function App() {
 
   return (
     <>
-      <ToastContainer
-        theme='light'
-        pauseOnHover
-        closeOnClick
-      />
+      <ToastContainer theme='light'pauseOnHover closeOnClick />
       <Routes>
         <Route element={<InitializeProjectSetup />}>
           <Route path='/' element={<Login />} />
@@ -54,12 +60,23 @@ function App() {
               <Route path='cart' element={<ProfileCart />} />
               <Route path='notifications' element={<ProfileNotification />} />
               <Route path='settings' element={<ProfileSettings />} />
-              
-              
               </Route>
             </Route>
-           
           </Route>
+          <Route path='admin' element={<AdminAuth />}>
+            <Route indexElement element={<AdminLayout />}>
+            <Route path='home' element={<AdminHome />} />
+            <Route path='bookings' element={<Bookings />} />
+            <Route path='packages' element={<Packages />} />
+            <Route path='addtour' element={<AddTourForm />}/>
+            <Route path='users' element={<Users />} />
+            <Route path='users/:id' element={<UserDetails />} />
+            <Route path='settings' element={<Settings />} />
+            <Route path="packages/:id" element={<AdminTourDetails />} />
+
+            </Route>
+
+            </Route>
           <Route path='*' element={<NotFound />} />
         </Route>
       </Routes>

@@ -5,6 +5,7 @@ let initialState = {
     isOnline:false,
     innerWidth: 0,
     innerHeight: 0,
+    canvasShow:false,
 
     login_data: {
     
@@ -31,6 +32,9 @@ const commonSlice = createSlice({
         updateIsonline(state, action) {
             state.isOnline= action?.payload
         },
+        updateCanvasShow(state) {
+            state.canvasShow = !state.canvasShow;
+        },
         clearToastErrors(state){
             state.toast_details.message = '';
             state.toast_details.type = '';
@@ -54,7 +58,7 @@ const commonSlice = createSlice({
             state.user_details.token = action?.payload?.token
             state.login_data = {}
         },
-        updateRegisterResponse(state,action){
+        updateRegisterResponse(state){
             state.login_data = {
                 user_name:'',
                 email:'',
@@ -82,6 +86,7 @@ export const {
     updateLoginResponse,
     updateToastMessage,
     clearToastErrors,
-    updateRegisterResponse
+    updateRegisterResponse,
+    updateCanvasShow
 } = actions
 export default reducer

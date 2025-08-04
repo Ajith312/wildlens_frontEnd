@@ -3,7 +3,7 @@ import commonReducer from 'Redux/Slice/Common.Slice';
 
 const rootReducer = combineReducers({
   commonState: commonReducer,
-});
+})
 
 const store = configureStore({
   reducer: rootReducer,
@@ -12,6 +12,6 @@ const store = configureStore({
       serializableCheck: false,
     }),
   devTools: true,
-});
+})
 
 export default store;

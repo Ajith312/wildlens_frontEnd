@@ -162,14 +162,6 @@ const TourDetails = () => {
     );
   }
 
-  function modalFooter (){
-    return(
-      <div className='d-flex gap-4 w-100 bg-info'>
-        <ButtonComponent className='btn-success w-50' buttonName="Book a tour" />
-        <ButtonComponent className='btn-outline-danger w-50' buttonName="Cancel" />
-      </div>
-    )
-  }
 
   return (
     <>
