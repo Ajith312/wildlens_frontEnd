@@ -8,9 +8,22 @@ const statusVariant = {
   cancelled: 'danger',
 }
 
+const getStatusColor = (status) => {
+  switch (status) {
+    case 'completed':
+      return '#198754';
+    case 'pending':
+      return '#ffc107';
+    case 'cancelled':
+      return '#dc3545';
+    default:
+      return '#6c757d';
+  }
+};
+
 const BookingHistoryCard = ({ booking, index }) => {
   return (
-    <Card className='mb-2'>
+    <Card className="booking-history-card" style={{'--status-color': getStatusColor(booking?.status)}}>
       <Card.Body>
         <Row className='align-items-center'>
             <Col md={1}><span className="fw-bold text-secondary text-start">#{booking?.number || index + 1}</span></Col>

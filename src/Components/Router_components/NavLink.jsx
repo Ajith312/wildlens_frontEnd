@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 
 const NavLinkComp = ({
   componentFrom,
@@ -8,9 +8,15 @@ const NavLinkComp = ({
   className,
   clickFunction
 }) => {
+  const location = useLocation()
+  const isActive = location.pathname.startsWith(to)
 
   return (
-    <NavLink to={to} className={`${className}`} onClick={clickFunction} end>
+    <NavLink
+      to={to}
+      onClick={clickFunction}
+      className={`${className} ${isActive ? 'active' : ''}`}
+    >
       {title}
     </NavLink>
   )

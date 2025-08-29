@@ -42,8 +42,9 @@ const OffCanvas = ({
             <Offcanvas.Body className={offcanvasBodyClassname}>
                 {canvasBody}
             </Offcanvas.Body>
-
+            <div className='px-4'>
             {canvasFooter}
+            </div>
         </Offcanvas>
     )
 }

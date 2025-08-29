@@ -8,7 +8,7 @@ const UserAuth = () => {
   const isUser = commonState?.user_details?.role === 'user'
   const hasToken = !!commonState?.user_details?.token
 
-  return !isUser && !hasToken ? <Outlet /> : <Navigate to='/' replace />
+  return isUser && hasToken ? <Outlet /> : <Navigate to='/' replace />
 }
 
 export default UserAuth

@@ -1,5 +1,6 @@
 import ButtonComponent from 'Components/Button/Button'
 import { useCommonState, useCustomNavigate, useDispatch } from 'Components/CustomHooks'
+import PasswordInput from 'Components/Input/PasswordInput'
 import LinkComponent from 'Components/Router_components/LinkComponent'
 import React, { useEffect } from 'react'
 import { Form } from 'react-bootstrap'
@@ -24,7 +25,6 @@ const ChangePassword = () => {
       return
     }
     const user_email = sessionStorage.getItem('user_email')
-    console.log(user_email,'27')
     const payload = {
       pwd_verify_string:Number(otp),
       password:password,
@@ -48,24 +48,27 @@ const ChangePassword = () => {
                 <Form.Group className="mb-3">
                   <Form.Control type="text"
                     placeholder="OTP"
-                    value={otp}
+                    value={otp || ''}
                     onChange={(e) => { dispatch(handleRegisterCredentials({ otp: e.target.value })) }} />
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                  <Form.Control type="password" placeholder="Password"
-                    value={password}
-                    onChange={(e) => { dispatch(handleRegisterCredentials({ password: e.target.value })) }} />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                  <Form.Control
-                    type="password"
-                    placeholder="Confirm Password"
-                    value={confirm_password}
-                    onChange={(e) => { dispatch(handleRegisterCredentials({ confirm_password: e.target.value })) }}
+                  <PasswordInput
+                    placeholder="Password"
+                    name="password"
+                     value={password || ''}
+                    onChange={(e) => dispatch(handleRegisterCredentials({ password: e.target.value }))}
                   />
                 </Form.Group>
-                <ButtonComponent type='button' className='btn btn-success w-100' clickFunction={handleSubmitChangePassword} buttonName='SUBMIT' />
+                <Form.Group className="mb-3">
+                  <PasswordInput
+                   placeholder="Confirm Password"
+                    name="Confirm Password"
+                    value={confirm_password|| ''}
+                   onChange={(e) => { dispatch(handleRegisterCredentials({ confirm_password: e.target.value })) }}
+                  />
+                </Form.Group>
+                <ButtonComponent type='button' className='btn btn-success w-100' clickFunction={handleSubmitChangePassword} buttonName='SUBMIT' loading={commonState?.loading} />
               </Form>
             </div>
             <div className="mb-3">

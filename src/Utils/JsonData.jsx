@@ -1,4 +1,5 @@
 import { useCommonState, useCustomNavigate, useDispatch } from 'Components/CustomHooks';
+import { handleLogout } from 'Redux/Action/Common.Action';
 import Icons from 'Utils/Icons';
 import Image from 'Utils/Image'
 
@@ -46,88 +47,6 @@ const JsonData = () => {
 
 
     ],
-    tourDetails: [
-      {
-        "days": 3,
-        "country": "India",
-        "budget": 200000,
-        "title": "Quick Jungle Getaway",
-        "description": "Perfect for a weekend tiger adventure.",
-        "inclusions": ["Hotel", "1 Safari", "Guide"],
-        "exclusions": ["Flights", "Personal Expenses"],
-        imageGallery: [
-          "https://img.etb2bimg.com/files/cp/upload-16321079503320-safari.jpg",
-          "https://www.tourmyindia.com/blog//wp-content/uploads/2018/06/Willdife-Holidays-in-India.jpg",
-          "https://i.assetzen.net/i/9Sf9fjP1eYpd/w:1200/h:808/q:70.jpg",
-          "https://www.fondationsegre.org/wp-content/uploads/2019/11/RAP-Tiger-and-cubs-Bandipur_Augustine-Prince_WTI-1-750x400.jpg"
-        ],
-
-        "placesCovered": [
-          {
-            "name": "Ranthambore",
-            "description": "Tiger reserve in Rajasthan.",
-            "_id": "68875cb6dcc2e5e6bcf8efbd"
-          }
-        ],
-        "_id": "68875cb6dcc2e5e6bcf8efbc"
-      },
-      {
-        "days": 5,
-        "country": "India",
-        "budget": 500000,
-        "title": "Explorer's Wild Trail",
-        "description": "Visit India’s finest wildlife parks.",
-        "inclusions": ["Hotel", "2 Safaris", "Meals", "Guide"],
-        "exclusions": ["Flights", "Tips"],
-        imageGallery: [
-          "https://img.etb2bimg.com/files/cp/upload-16321079503320-safari.jpg",
-          "https://www.tourmyindia.com/blog//wp-content/uploads/2018/06/Willdife-Holidays-in-India.jpg",
-          "https://i.assetzen.net/i/9Sf9fjP1eYpd/w:1200/h:808/q:70.jpg",
-          "https://www.fondationsegre.org/wp-content/uploads/2019/11/RAP-Tiger-and-cubs-Bandipur_Augustine-Prince_WTI-1-750x400.jpg"
-        ],
-        "placesCovered": [
-          {
-            "name": "Ranthambore",
-            "description": "Bengal tigers and ancient fort.",
-            "_id": "68875f03a1012be5596fedfe"
-          },
-          {
-            "name": "Jim Corbett",
-            "description": "First national park in India.",
-            "_id": "68875f03a1012be5596fedff"
-          }
-        ],
-        "_id": "68875f03a1012be5596fedfd"
-      },
-      {
-        "days": 5,
-        "country": "India",
-        "budget": 500000,
-        "title": "Explorer's Wild Trail",
-        "description": "Visit India’s finest wildlife parks.",
-        "inclusions": ["Hotel", "2 Safaris", "Meals", "Guide"],
-        "exclusions": ["Flights", "Tips"],
-        imageGallery: [
-          "https://img.etb2bimg.com/files/cp/upload-16321079503320-safari.jpg",
-          "https://www.tourmyindia.com/blog//wp-content/uploads/2018/06/Willdife-Holidays-in-India.jpg",
-          "https://i.assetzen.net/i/9Sf9fjP1eYpd/w:1200/h:808/q:70.jpg",
-          "https://www.fondationsegre.org/wp-content/uploads/2019/11/RAP-Tiger-and-cubs-Bandipur_Augustine-Prince_WTI-1-750x400.jpg"
-        ],
-        "placesCovered": [
-          {
-            "name": "Ranthambore",
-            "description": "Bengal tigers and ancient fort.",
-            "_id": "68875f03a1012be5596fedfe"
-          },
-          {
-            "name": "Jim Corbett",
-            "description": "First national park in India.",
-            "_id": "68875f03a1012be5596fedff"
-          }
-        ],
-        "_id": "68875f03a1012be5596fedfg"
-      }
-    ],
     sidebarMenus: [
       {
         icon: Icons.dashboardIcon,
@@ -150,16 +69,11 @@ const JsonData = () => {
         icon: Icons.dashboardIcon,
         name: "Settings",
         route: "settings"
-      },
-      {
-        icon: Icons.dashboardIcon,
-        name: "Log out",
-        route: "/"
       }
     ],
     userDetails: [
       {
-        id: 'USR-001',
+        id: '6892e04eb5a0f0f11ee72d42',
         name: 'Alex Johnson',
         email: 'alex.johnson@example.com',
         phone: '+1 (555) 123-4567',
@@ -339,7 +253,7 @@ const JsonData = () => {
           history: []
         }
       }
-    ]
+    ],
     
 
 

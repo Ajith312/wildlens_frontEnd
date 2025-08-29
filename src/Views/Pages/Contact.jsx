@@ -1,87 +1,112 @@
 import React from 'react'
-import Col from "react-bootstrap/Col";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
+import { Col, Form, Row, Card } from "react-bootstrap";
 import { FiPhoneCall } from "react-icons/fi";
 import { MdAddLocationAlt, MdAttachEmail } from "react-icons/md";
 import { SlCalender } from "react-icons/sl";
 import Image from 'Utils/Image';
 
-
 const Contact = () => {
   return (
-    <div className="container-fluid d-flex flex-column p-0">
-    <div className="coverImageContainer d-flex justify-content-center align-items-center position-relative">
-        <img src={Image.heroSection} alt="cover-image" className="coverImage w-100 h-100"/>
-        <p className="coverText position-absolute text-white fw-bold">Contact</p>
+    <div className="contact-container">
+      <div className="position-relative text-center">
+        <img 
+          src={Image.heroSection} 
+          alt="cover" 
+          className="w-100 cover-image"
+          style={{ height: '300px', objectFit: 'cover' }}
+        />
+        <h1 className="position-absolute top-50 start-50 translate-middle text-white fw-bold">
+          Contact
+        </h1>
       </div>
 
-    <div className="contactDeatailsContainer  d-flex justify-content-center align-items-center">
-    <div className="contacyDeatailsBox col-10 my-5 d-flex flex-column flex-lg-row justify-content-lg-around align-items-center gap-5">
-        <div className="contactBox col-10 col-lg-5 p-3 rounded-3 bg-info-subtle">
-          <div className="phoneNumBox d-flex justify-content-center mb-4 py-3 border border-dark-subtle rounded-3">
-            <div className="col-1 d-flex justify-content-end align-items-center me-3"><FiPhoneCall size={30} color="green"/></div>
-            <div className="col-9">
-              <p className="text-start mb-0">+91 9876543210</p>
-              <p className="text-start mb-0">+91 8545765424</p>
-            </div>
-          </div>
-          <div className="emailBox d-flex  justify-content-center  mb-4 py-3 border border-dark-subtle rounded-3">
-            <div className="col-1 d-flex justify-content-end align-items-center me-3"><MdAttachEmail size={30} color="green" /></div>
-            <div className="col-9">
-              <p className="text-start mb-0">info@wildtour.com</p>
-              <p className="text-start mb-0">marketting@wildtour.com</p>
-            </div>
-          </div>
-          <div className="addressBox d-flex justify-content-center mb-4 py-3 border border-dark-subtle rounded-3">
-            <div className="col-1 d-flex justify-content-end align-items-center me-3"><MdAddLocationAlt size={30} color="green" /></div>
-            <div className="col-9">
-              <p className="text-start mb-0">No 169,Saravanampatti,</p>
-              <p className="text-start mb-0">coimbatore,Tamilnadu,641035</p>
-            </div>
-          </div>
+      <div className="container py-5">
+        <Row className="g-4 justify-content-center">
+          <Col lg={5} className="pe-lg-4 mb-4 mb-lg-0">
+            <Card className="h-100 bg-info-subtle">
+              <Card.Body className="p-4">
+                <div className="d-flex mb-4 p-3 bg-white rounded">
+                  <div className="me-3 text-success d-flex align-items-center">
+                    <FiPhoneCall size={24} />
+                  </div>
+                  <div>
+                    <p className="mb-1">+91 9876543210</p>
+                    <p className="mb-0">+91 8545765424</p>
+                  </div>
+                </div>
+                <div className="d-flex mb-4 p-3 bg-white rounded">
+                  <div className="me-3 text-success d-flex align-items-center">
+                    <MdAttachEmail size={24} />
+                  </div>
+                  <div>
+                    <p className="mb-1">info@wildtour.com</p>
+                    <p className="mb-0">marketing@wildtour.com</p>
+                  </div>
+                </div>
 
-          <div className="addressBox d-flex justify-content-center mb-4 py-3 border border-dark-subtle rounded-3">
-            <div className="col-1 d-flex justify-content-end align-items-center me-3"><SlCalender size={30} color="green" /></div>
-            <div className="col-9">
-              <p className="text-start mb-0">9.00 A.M to 5.00P.M</p>
-              <p className="text-start mb-0">Monday - Saturday</p>
-            </div>
-          </div>
-        </div>
-        <div className="reachUsBox col-10 col-lg-5  h-100 bg-success-subtle rounded-3">
-          <div className="reachContent p-5 h-100">
-            <h3 className="text-start fw-bold">Reach Us Anytime</h3>
-            <Form>
-              
-              <Form.Group className="mb-3" controlId="formGridName">
-                <Form.Label>Name</Form.Label>
-                <Form.Control type="text" placeholder="Enter Name" />
-              </Form.Group>
-              <Row className="mb-3 gap-2">
-                <Form.Group as={Col} controlId="formGridEmail">
-                  <Form.Label>Email</Form.Label>
-                  <Form.Control type="email" placeholder="Enter email" />
-                </Form.Group>
+                <div className="d-flex mb-4 p-3 bg-white rounded">
+                  <div className="me-3 text-success d-flex align-items-center">
+                    <MdAddLocationAlt size={24} />
+                  </div>
+                  <div>
+                    <p className="mb-1">No 169, Saravanampatti</p>
+                    <p className="mb-0">Coimbatore, Tamilnadu, 641035</p>
+                  </div>
+                </div>
 
-                <Form.Group as={Col} controlId="formGridPhoneNumber">
-                  <Form.Label>Phone Number</Form.Label>
-                  <Form.Control type="text" placeholder="Phone" />
-                </Form.Group>
-              </Row>
+                <div className="d-flex p-3 bg-white rounded">
+                  <div className="me-3 text-success d-flex align-items-center">
+                    <SlCalender size={24} />
+                  </div>
+                  <div>
+                    <p className="mb-1">9.00 A.M to 5.00 P.M</p>
+                    <p className="mb-0">Monday - Saturday</p>
+                  </div>
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
 
-              <Form.Group className="mb-3" controlId="formGridMessege">
-                <Form.Label>Comments</Form.Label>
-                <Form.Control as="textarea" rows={4} placeholder="Write Your Messege"/>
-              </Form.Group>
-            </Form>
-          </div>
-        </div>
+          <Col lg={7}>
+            <Card className="h-100 bg-success-subtle">
+              <Card.Body className="p-4">
+                <h3 className="mb-4 fw-bold">Reach Us Anytime</h3>
+                <Form>
+                  <Form.Group className="mb-3" controlId="formName">
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control type="text" placeholder="Enter Name" />
+                  </Form.Group>
+
+                  <Row className="mb-3 g-2">
+                    <Col md={6} className="mb-3 mb-md-0 pe-md-1">
+                      <Form.Group controlId="formEmail">
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control type="email" placeholder="Enter email" />
+                      </Form.Group>
+                    </Col>
+                    <Col md={6} className='ps-md-1'>
+                      <Form.Group controlId="formPhone">
+                        <Form.Label>Phone Number</Form.Label>
+                        <Form.Control type="tel" placeholder="Phone" />
+                      </Form.Group>
+                    </Col>
+                  </Row>
+
+                  <Form.Group className="mb-3" controlId="formMessage">
+                    <Form.Label>Comments</Form.Label>
+                    <Form.Control 
+                      as="textarea" 
+                      rows={4} 
+                      placeholder="Write Your Message"
+                    />
+                  </Form.Group>
+                </Form>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
       </div>
-      
     </div>
-  
-  </div>
   )
 }
 

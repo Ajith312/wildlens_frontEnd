@@ -36,10 +36,10 @@ const ForgotPassword = () => {
             <h3 className="mt-4 fw-bold fs-2 text-white">WILDLENS TOUR</h3>
             <p className="fw-bold fs-4 text-info">Forget Password</p>
           </div>
-          <div className="px-lg-5 ">
+          <div className="px-3 px-lg-5 ">
             <Form className="login-form">
               <Form.Group className="mb-3" controlId="">
-                <Form.Control type="email" placeholder="Email" value={commonState?.login_data?.email} onChange={(e)=>{dispatch(handleRegisterCredentials({email:e.target.value}))}}/>
+                <Form.Control type="email" placeholder="Email" value={commonState?.login_data?.email|| ''} onChange={(e)=>{dispatch(handleRegisterCredentials({email:e.target.value}))}}/>
               </Form.Group>
               <ButtonComponent type='button' className='btn btn-success w-100' clickFunction={handleSubmitForgetPassword} buttonName='SUBMIT' />
             </Form>

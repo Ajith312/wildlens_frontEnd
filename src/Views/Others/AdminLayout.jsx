@@ -16,7 +16,6 @@ const AdminLayout = () => {
  
   return (
     <div className="d-flex flex-wrap main_rendering_contents_height">
-    {/* sidebar  */}
     <Sidebar
         responsiveOn={"xl"}
         offCanvasShow={commonState?.innerWidth <= 1199 ? commonState?.canvasShow : false}
@@ -29,7 +28,6 @@ const AdminLayout = () => {
 
     <div className="col">
         <main className="w-100">
-            {/* header  */}
             <header className='d-flex align-items-center'>
                 <div className="container-fluid">
                     <Header
@@ -41,7 +39,6 @@ const AdminLayout = () => {
                 </div>
             </header>
 
-            {/* main content */}
             <div className="main">
                 <div className="container-fluid">
                     <Outlet />

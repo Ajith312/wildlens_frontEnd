@@ -1,10 +1,11 @@
 import axios from "axios";
-import store from "../StoreIndex";
-import { handlerefreshToken } from "Views/Common/Actions/Common_action";
+import { handlerefreshToken } from "Redux/Action/Common.Action";
+import store from "Store";
+const baseURL = import.meta.env.VITE_APP_API_URL;
 
 
 const axiosInstance = axios.create({
-  baseURL: `${process.env.REACT_APP_API_URL}`,
+  baseURL,
   headers: {
     'Content-Type': 'application/json',
   }
@@ -47,7 +48,7 @@ axiosInstance.interceptors.response.use(
 
 axiosInstance.interceptors.request.use((config) => {
   const state = store.getState();
-  const token = state?.commonState?.token;
+  const token = state?.commonState?.user_details?.token;
 
   //Bearer token
   if (token) {

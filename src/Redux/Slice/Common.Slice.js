@@ -6,6 +6,8 @@ let initialState = {
     innerWidth: 0,
     innerHeight: 0,
     canvasShow:false,
+    loading:false,
+    loadingTwo:false,
 
     login_data: {
     
@@ -17,6 +19,9 @@ let initialState = {
     toast_details:{
         type:'',
         message:''
+    },
+    profile_details:{
+
     }
     
 }
@@ -31,6 +36,12 @@ const commonSlice = createSlice({
         },
         updateIsonline(state, action) {
             state.isOnline= action?.payload
+        },
+        updateLoading:(state,action)=>{
+            state.loading = action.payload
+        },
+        updateLoadingTwo:(state,action)=>{
+            state.loadingTwo = action.payload
         },
         updateCanvasShow(state) {
             state.canvasShow = !state.canvasShow;
@@ -48,17 +59,14 @@ const commonSlice = createSlice({
             state.login_data[key] = value || '';
         },
         updateLoginRequest(state,action){
-            return{
-
-            }
-            
+        
         },
-        updateLoginResponse(state,action){
+        updateLoginResponse:(state,action)=>{
             state.user_details.role = action?.payload?.role
             state.user_details.token = action?.payload?.token
             state.login_data = {}
         },
-        updateRegisterResponse(state){
+        updateRegisterResponse:(state)=>{
             state.login_data = {
                 user_name:'',
                 email:'',
@@ -69,6 +77,18 @@ const commonSlice = createSlice({
             state.toast_details = {
                  type:'',
                 message:''
+            }
+        },
+           updateRefreshToken:(state, action)=>{
+            state.user_details.token = action?.payload;
+        },
+        updateProfileDetails:(state,action)=>{
+            state.profile_details = action.payload
+        },
+        clearUserDetails:(state,action)=>{
+            state.user_details={
+                token:"",
+                role:""
             }
         }
 
@@ -87,6 +107,11 @@ export const {
     updateToastMessage,
     clearToastErrors,
     updateRegisterResponse,
-    updateCanvasShow
+    updateCanvasShow,
+    updateRefreshToken,
+    updateProfileDetails,
+    updateLoading,
+    clearUserDetails,
+    updateLoadingTwo
 } = actions
 export default reducer

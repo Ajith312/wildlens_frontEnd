@@ -6,22 +6,28 @@ const ButtonComponent = ({
   buttonName,
   as,
   className,
-  type,
+  type = "button",
   clickFunction,
-  btnDisable
+  loading = false 
 }) => {
-
-
   return (
     <button
       as={as}
       type={type}
-      className={`btn ${className}`}
+      className={`btn ${className} d-flex align-items-center justify-content-center`}
       onClick={clickFunction}
       title={title}
-      disabled={btnDisable}
+      disabled={loading} 
     >
-      {buttonName}
+      {loading && (
+        <span 
+          className="spinner-border me-2" 
+          role="status" 
+          aria-hidden="true"
+          style={{ width: "1.5rem", height: "1.5rem" }}
+        />
+      )}
+      {loading ? "Please wait..." : buttonName}
     </button>
   );
 };

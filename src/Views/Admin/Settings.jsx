@@ -1,10 +1,45 @@
-import React from 'react';
+import ButtonComponent from 'Components/Button/Button';
+import { useCommonState, useDispatch } from 'Components/CustomHooks';
+import PasswordInput from 'Components/Input/PasswordInput';
+import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Card, Form, Button, InputGroup } from 'react-bootstrap';
-import { FaFacebook, FaGoogle, FaLinkedin, FaEye, FaEyeSlash, FaEdit, FaTrash, FaUpload } from 'react-icons/fa';
-import { MdCreditCard } from 'react-icons/md';
+import { FaEyeSlash, FaEdit, FaTrash, FaUpload,FaEye } from 'react-icons/fa';
 import { FiEdit3 } from 'react-icons/fi';
+import { handleUpdatePassword } from 'Redux/Action/Admin.Action';
+import { getProfileDetails } from 'Redux/Action/Common.Action';
+import { updatePasswordInputs } from 'Redux/Slice/Admin.Slice';
+import { updateToastMessage } from 'Redux/Slice/Common.Slice';
+
 
 const Settings = () => {
+  const dispatch = useDispatch()
+  const { profile_details } = useCommonState()?.commonState
+  const {passwordInputs} = useCommonState()?.adminState
+
+  useEffect(() => {
+    if (Object.keys(profile_details)?.length === 0) {
+      dispatch(getProfileDetails())
+    }
+  }, [profile_details])
+
+  const changeUserPassword = () => {
+    const { current_password, password, confirm_password } = passwordInputs || {}
+    if (!current_password || !password || !confirm_password) {
+      return dispatch(updateToastMessage({ message: "All fields are required", type: "error" }))
+    }
+    if (password !== confirm_password) {
+      return dispatch(updateToastMessage({ message: "New password and confirm password do not match", type: "error" }))
+    }
+
+    const payload = {
+      email: profile_details?.email,
+      current_password,
+      password,
+    }
+    dispatch(handleUpdatePassword(payload))
+  }
+
+
   return (
     <Container fluid className="">
       <h5 className="fw-semibold">About section</h5>
@@ -12,18 +47,20 @@ const Settings = () => {
       <Row className="align-items-stretch">
 
         <Col lg={4} className="p-2 d-flex flex-column">
-    
+
           <Card className="mb-3 text-center flex-fill">
             <Card.Body>
               <img
-                src="https://randomuser.me/api/portraits/men/75.jpg"
+                src={profile_details?.profile_picture}
                 alt="profile"
                 className="rounded-circle mb-3"
-                width="90"
-                height="90"
+                width="130"
+                height="130"
               />
-              <Card.Title>Wade Warren</Card.Title>
-              <Card.Text className="text-muted">wade.warren@example.com</Card.Text>
+              <Card.Title>{profile_details?.user_name}</Card.Title>
+              <Card.Text className="text-muted mb-1">{profile_details?.email}</Card.Text>
+              <Card.Text className="text-muted mb-2">{profile_details?.phone_number}</Card.Text>
+              <ButtonComponent type="button" className="btn-warning px-4" buttonName="Edit Profile"  />
             </Card.Body>
           </Card>
 
@@ -31,36 +68,40 @@ const Settings = () => {
             <Card.Body>
               <div className="d-flex justify-content-between align-items-center mb-3">
                 <Card.Title className="mb-0 fs-6">Change Password</Card.Title>
-                <a href="#help" className="text-decoration-none text-muted fs-7">Need help?</a>
+                <a href="#" className="text-decoration-none text-muted fs-7">Need help?</a>
               </div>
 
               <Form>
                 <Form.Group className="mb-3">
                   <Form.Label>Current Password</Form.Label>
-                  <InputGroup>
-                    <Form.Control type="password" placeholder="Enter password" />
-                    <InputGroup.Text><FaEyeSlash /></InputGroup.Text>
-                  </InputGroup>
-                  <small><a href="#" className="text-decoration-none">Forgot Current Password? Click here</a></small>
+                  <PasswordInput
+                    placeholder="Password"
+                    name="password"
+                    value={passwordInputs?.current_password}
+                    onChange={(e)=>dispatch(updatePasswordInputs({current_password:e.target.value}))}
+                  />
                 </Form.Group>
 
                 <Form.Group className="mb-3">
                   <Form.Label>New Password</Form.Label>
-                  <InputGroup>
-                    <Form.Control type="password" placeholder="Enter password" />
-                    <InputGroup.Text><FaEyeSlash /></InputGroup.Text>
-                  </InputGroup>
+                  <PasswordInput
+                    placeholder="New Password"
+                    name="new password"
+                    value={passwordInputs?.password}
+                     onChange={(e)=>dispatch(updatePasswordInputs({password:e.target.value}))}
+                  />
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                  <Form.Label>Re-enter Password</Form.Label>
-                  <InputGroup>
-                    <Form.Control type="password" placeholder="Enter password" />
-                    <InputGroup.Text><FaEyeSlash /></InputGroup.Text>
-                  </InputGroup>
+                  <Form.Label>Confirm Password</Form.Label>
+                  <PasswordInput
+                    placeholder="Confirm Password"
+                    name="confirm password"
+                    value={passwordInputs?.confirm_password}
+                    onChange={(e)=>dispatch(updatePasswordInputs({confirm_password:e.target.value}))}
+                  />
                 </Form.Group>
-
-                <Button variant="success" className="w-100">Save Change</Button>
+                <ButtonComponent type="button" className="btn-success w-100" buttonName="Change Password" clickFunction={changeUserPassword} />
               </Form>
             </Card.Body>
           </Card>
@@ -150,7 +191,7 @@ const Settings = () => {
               <Form.Group>
                 <Form.Label>Biography</Form.Label>
                 <InputGroup>
-                  <Form.Control as="textarea"  placeholder="Enter a biography about you" />
+                  <Form.Control as="textarea" placeholder="Enter a biography about you" />
                   <InputGroup.Text><FiEdit3 /></InputGroup.Text>
                 </InputGroup>
               </Form.Group>

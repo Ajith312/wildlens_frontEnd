@@ -1,19 +1,27 @@
 import ButtonComponent from 'Components/Button/Button'
 import TourCard from 'Components/Card/TourCard'
-import React from 'react'
+import { useDispatch } from 'Components/CustomHooks'
+import React, { useEffect } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import JsonData from 'Utils/JsonData'
+import { getAllTours } from 'Redux/Action/Tour.Action'
 
 const Packages = () => {
-  const { tourDetails } = JsonData()?.jsonOnly
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const {tour_package_details} = useSelector((state)=>state?.tourState)
+
+  useEffect(()=>{
+    dispatch(getAllTours())
+  },[])
 
 
   return (
-    <Container className='h-100 w-100'>
+    <Container fluid className='h-100 w-100'>
       <Row className="bookingHeaderBox d-flex justify-content-between">
-        <Col xs={12} sm={6} lg={4}>
+        <Col xs={12} sm={6} lg={4} xl={3}>
         <h4 className='d-flex align-items-center mb-0'>Tour packages</h4>
         </Col>
         <Col xs={12} sm={6} lg={4} className="bookingHeaderBtn d-flex gap-2 justify-content-md-end ">
@@ -22,8 +30,8 @@ const Packages = () => {
         </Col>
       </Row>
       <Row className="mt-3">
-        {tourDetails?.map((tour) => (
-          <Col key={tour._id} xs={12} sm={6} lg={4} className='p-2 tour-card-box'>
+        {tour_package_details?.map((tour) => (
+          <Col key={tour._id} xs={12} sm={6} lg={4} xl={3} className='p-2 tour-card-box'>
             <TourCard tour={tour} admin = "true" />
           </Col>
         ))

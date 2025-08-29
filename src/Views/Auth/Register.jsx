@@ -1,5 +1,6 @@
 import ButtonComponent from 'Components/Button/Button'
 import { useCommonState, useCustomNavigate, useDispatch } from 'Components/CustomHooks'
+import PasswordInput from 'Components/Input/PasswordInput'
 import LinkComponent from 'Components/Router_components/LinkComponent'
 import React, { useEffect } from 'react'
 import { Form } from 'react-bootstrap'
@@ -36,13 +37,13 @@ const Register = () => {
                             <h3 className="mt-4 fw-bold fs-2 text-white">WILDLENS TOUR</h3>
                             <p className="fw-bold fs-4 text-info">SIGN UP</p>
                         </div>
-                        <div className="px-lg-5">
+                        <div className="px-3 px-lg-5">
                             <Form>
                                 <Form.Group className="mb-3">
                                     <Form.Control
                                         type="text"
                                         placeholder="Username"
-                                        value={commonState?.login_data?.user_name}
+                                        value={commonState?.login_data?.user_name|| ''}
                                         onChange={(e) => dispatch(handleRegisterCredentials({ user_name: e.target.value }))}
                                     />
                                 </Form.Group>
@@ -50,26 +51,24 @@ const Register = () => {
                                     <Form.Control
                                         type="email"
                                         placeholder="Email"
-                                        value={commonState?.login_data?.email}
+                                        value={commonState?.login_data?.email|| ''}
                                         onChange={(e) => dispatch(handleRegisterCredentials({ email: e.target.value }))}
                                     />
                                 </Form.Group>
-                                <Form.Group className="mb-3">
-                                    <Form.Control
-                                        type="password"
+                                <Form.Group className="mb-3">                                
+                                    <PasswordInput
                                         placeholder="Password"
-                                        value={commonState?.login_data?.password}
+                                        name="password"
+                                        value={commonState?.login_data?.password || ''}
                                         onChange={(e) => dispatch(handleRegisterCredentials({ password: e.target.value }))}
                                     />
                                 </Form.Group>
                                 <Form.Group className="mb-3">
-                                    <Form.Control
-                                        type="password"
-                                        placeholder="Confirm Password"
-                                        value={commonState?.login_data?.confirm_password}
-                                        onChange={(e) =>
-                                            dispatch(handleRegisterCredentials({ confirm_password: e.target.value }))
-                                        }
+                                    <PasswordInput
+                                       placeholder="Confirm Password"
+                                        name="Confirm Password"
+                                        value={commonState?.login_data?.confirm_password || ""}
+                                        onChange={(e) =>dispatch(handleRegisterCredentials({ confirm_password: e.target.value }))}
                                     />
                                 </Form.Group>
 
@@ -78,6 +77,7 @@ const Register = () => {
                                     className="btn btn-success w-100"
                                     clickFunction={handleRegisterSubmit}
                                     buttonName='SIGN UP'
+                                    loading={commonState?.loading}
                                 />
                             </Form>
                         </div>

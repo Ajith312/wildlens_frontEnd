@@ -13,8 +13,7 @@ const Header = ({ offcanvasOn, offcanvasOnButton }) => {
     role: "Administrator",
     avatar: "https://randomuser.me/api/portraits/men/32.jpg"
   };
-  
-  // Sample notifications data
+
   const notifications = [
     { id: 1, text: 'New booking received', time: '2 min ago', read: false },
     { id: 2, text: 'Payment processed', time: '1 hour ago', read: true },
@@ -30,9 +29,8 @@ const Header = ({ offcanvasOn, offcanvasOnButton }) => {
       cardBodyClassName='py-2 px-3 header-body'
       cardContent={
         <div className="d-flex align-items-center justify-content-between">
-          {/* Left side - Menu and Page Title */}
           <div className="d-flex align-items-center">
-            {offcanvasOn && (
+            {commonState?.innerWidth <= 1199 && (
               <ButtonComponent
                 type="button"
                 className="btn-transparent me-3"
@@ -43,9 +41,9 @@ const Header = ({ offcanvasOn, offcanvasOnButton }) => {
             <h5 className="mb-0 fw-semibold">{commonState?.currentMenuName || 'Dashboard'}</h5>
           </div>
 
-          {/* Right side - Search and User Area */}
+
           <div className="d-flex align-items-center">
-            {/* Search Bar */}
+
             <div className="me-3 d-none d-md-block" style={{ width: '250px' }}>
               <InputGroup>
                 <InputGroup.Text className="bg-white border-end-0">
@@ -58,7 +56,7 @@ const Header = ({ offcanvasOn, offcanvasOnButton }) => {
               </InputGroup>
             </div>
 
-            {/* Notifications Dropdown */}
+
             <Dropdown className="me-3" align="end">
               <Dropdown.Toggle 
                 variant="transparent" 
@@ -107,7 +105,7 @@ const Header = ({ offcanvasOn, offcanvasOnButton }) => {
               </Dropdown.Menu>
             </Dropdown>
 
-            {/* User Profile Dropdown */}
+
             <Dropdown align="end">
           <Dropdown.Toggle
             variant="light"

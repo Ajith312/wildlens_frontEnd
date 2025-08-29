@@ -90,6 +90,11 @@ body {
   border: var(--sidebar-border);
 }
 
+.offcanvas-sidebar{
+  background: var(--sidebar-background-color) !important;
+
+}
+
 .sidebar-header {
   height: calc(var(--sidebar-header-height) - var(--sidebar-y-padding));
 }

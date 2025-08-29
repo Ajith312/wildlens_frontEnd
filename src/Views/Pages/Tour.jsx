@@ -1,14 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {Row, Col, Card, Form, Button } from 'react-bootstrap';
 import TourCard from 'Components/Card/TourCard';
 import Image from 'Utils/Image';
 import { IoMdStar } from 'react-icons/io';
 import ButtonComponent from 'Components/Button/Button';
 import JsonData from 'Utils/JsonData';
+import { useDispatch } from 'Components/CustomHooks';
+import { getAllTours } from 'Redux/Action/Tour.Action';
+import { useSelector } from 'react-redux';
 
 const Tour = () => {
-  const {jsonOnly} = JsonData()
+  const dispatch = useDispatch()
   const tourDetails = []
+  const {tour_package_details} = useSelector((state)=>state?.tourState)
+
+useEffect(()=>{
+  dispatch(getAllTours())
+
+},[])
   return (
     <div className="container-fluid d-flex flex-column p-0">
       <div className="coverImageContainer d-flex justify-content-center align-items-center position-relative">
@@ -63,7 +72,7 @@ const Tour = () => {
         <Col xs={12} md={8} lg={9} className="px-3">
           <Row className="">
             {
-              jsonOnly?.tourDetails?.map((tour)=>(
+              tour_package_details?.map((tour)=>(
                 <Col key={tour._id} xs={12} sm={6} lg={4} className='p-2 tour-card-box'>
                 <TourCard tour={tour} />
               </Col>

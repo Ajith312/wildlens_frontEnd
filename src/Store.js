@@ -1,8 +1,12 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import commonReducer from 'Redux/Slice/Common.Slice'; 
+import commonReducer from 'Redux/Slice/Common.Slice';
+import tourReducer from 'Redux/Slice/Tour.Slice'
+import adminReducer from "Redux/Slice/Admin.Slice"
 
 const rootReducer = combineReducers({
   commonState: commonReducer,
+  tourState: tourReducer,
+  adminState: adminReducer
 })
 
 const store = configureStore({
@@ -11,7 +15,14 @@ const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: false,
     }),
-  devTools: true,
+  devTools: {
+    name: 'WildLens Tour',
+    trace: false,
+    maxAge: 30,
+    shouldRecordChanges: true,
+    shouldCatchErrors: true,
+    actionsDenylist: ['very/frequent/action'],
+  }
 })
 
 export default store;

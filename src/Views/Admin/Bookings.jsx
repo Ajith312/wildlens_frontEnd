@@ -57,24 +57,33 @@ const Bookings = () => {
       <Row className="mb-4">
         {bookingCards.map((item, i) => (
           <Col key={i} xs={12} sm={6} lg={3} className="mb-3 mb-lg-0 p-2 d-flex">
-            <DashboardCard item={item} className="flex-fill" />
+            <DashboardCard item={item} className="flex-fill bg-success-subtle" />
           </Col>
         ))}
       </Row>
 
       <Card className="booking-cards-container">
         <Card.Body>
-        <div className="d-flex justify-content-between align-items-center mb-3">
-          <div className='col-5 bg-success-subtle d-flex justify-content-between align-items-center p-2 rounded-2 cursor-pointer'>
-            <div className={tab === "all" ? "filterTabBtn" : "" } onClick={()=>setTab('all')}>All Order</div>
-            <div className={tab === "completed" ? "filterTabBtn" : "" } onClick={()=>setTab('completed')}>Completed</div>
-            <div className={tab === "pending" ? "filterTabBtn" : "" } onClick={()=>setTab('pending')}>Pending</div>
-            <div className={tab === "cancelled" ? "filterTabBtn" : "" } onClick={()=>setTab('cancelled')}>Cancelled</div>
+        <div className="d-flex flex-column flex-lg-row justify-content-between align-items-center mb-3">
+          <div className='col-12 col-lg-5 bg-success-subtle d-flex justify-content-between align-items-center p-2 rounded-2 cursor-pointer mb-3 mb-lg-0'>
+            <div className={tab === "all" ? "filterTabBtn" : "" } onClick={()=>setTab('all')}>
+              <p className='filterTabBtnText mb-0'>All Order</p>
+            </div>
+            <div className={tab === "completed" ? "filterTabBtn" : "" } onClick={()=>setTab('completed')}>
+              <p className='filterTabBtnText mb-0'>Completed</p>
+              </div>
+            <div className={tab === "pending" ? "filterTabBtn" : "" } onClick={()=>setTab('pending')}>
+              <p className='filterTabBtnText mb-0'>Pending</p></div>
+            <div className={tab === "cancelled" ? "filterTabBtn" : "" } onClick={()=>setTab('cancelled')}>
+              <p className='filterTabBtnText mb-0'>Cancelled</p>
+              </div>
           </div>
-          <InputGroup className="w-50">
+          <div className='col-12 col-lg-6'>
+          <InputGroup className="w-100">
             <InputGroup.Text><BsSearch /></InputGroup.Text>
             <Form.Control placeholder="Search" />
           </InputGroup>
+          </div>
         </div>
 
         <div className="booking-cards-list">

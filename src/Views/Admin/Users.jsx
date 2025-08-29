@@ -1,20 +1,22 @@
 import UserCard from "Components/Card/UserCard";
-import { useCustomNavigate } from "Components/CustomHooks";
-import React from "react";
+import { useCommonState, useDispatch } from "Components/CustomHooks";
+import React, { useEffect } from "react";
 import { Row,Col } from "react-bootstrap";
-import JsonData from "Utils/JsonData";
+import { getAllUserDetails } from "Redux/Action/Admin.Action";
 const Users = () => {
-  const {userDetails} = JsonData()?.jsonOnly
-  console.log(userDetails,'userDetails');
-  const handleViewProfile = (userId) => {
-    
-  };
+  const dispatch = useDispatch()
+  const { user_details}= useCommonState()?.adminState
+
+
+  useEffect(() => {
+    dispatch(getAllUserDetails())
+  }, [])
 
   return (
     <Row className="row">
-      {userDetails?.map(user => (
+      {user_details?.map(user => (
         <Col key={user.id} xs={12} sm={6} lg={4} xl={3} className="p-2">
-          <UserCard user={user} onViewProfile={handleViewProfile(user?.id)} />
+          <UserCard user={user} />
         </Col>
       ))}
     </Row>

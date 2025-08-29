@@ -6,11 +6,12 @@ import { Button } from 'react-bootstrap';
 import { IoMdStar } from 'react-icons/io';
 import { RiMoneyRupeeCircleLine } from 'react-icons/ri';
 import Image from 'Utils/Image';
-import { useCustomNavigate } from 'Components/CustomHooks';
+import { useCustomNavigate, useDispatch } from 'Components/CustomHooks';
 import ButtonComponent from 'Components/Button/Button';
 
 const TourCard = ({ tour,admin=false }) => {
-  const navigate = useCustomNavigate();
+  const navigate = useCustomNavigate()
+  const dispatch = useDispatch()
 
   const handleCardClick = () => {
     if(admin){
@@ -18,14 +19,13 @@ const TourCard = ({ tour,admin=false }) => {
     }else {
       navigate(`/user/tour/${tour._id}`);
     }
-  
-  };
+  }
 
   return (
-    <div className="tour-card" onClick={handleCardClick}>
+    <div className="tour-card">
       <Card className="card-box">
-        <Card.Img variant="top" src={Image.cardImg} className="p-3" />
-        <Card.Body>
+        <Card.Img variant="top" src={Image.cardImg} className="p-3" onClick={handleCardClick} />
+        <Card.Body onClick={handleCardClick}>
           <Card.Text className="mb-3 text-dark fs-5 fw-bold">
             {tour?.title}
           </Card.Text>
@@ -72,7 +72,7 @@ const TourCard = ({ tour,admin=false }) => {
            <Card.Footer className="bg-white">
            <div className="tourcard-footer d-flex flex-column flex-sm-row justify-content-sm-between justify-content-center align-items-center p-2 gap-2">
               <ButtonComponent className='btn-outline-primary w-100 w-md-50 ' buttonName='Edit' clickFunction={()=>console.log("tour?.id")} />
-              <ButtonComponent className='btn-outline-danger w-100 w-md-50 ' buttonName='Delete' clickFunction={()=>console.log("tour?.id")} />
+              <ButtonComponent className='btn-outline-danger w-100 w-md-50 ' buttonName='Delete' clickFunction={()=>console.log("tour?.id",tour?._id)} />
            </div>
          </Card.Footer>
         

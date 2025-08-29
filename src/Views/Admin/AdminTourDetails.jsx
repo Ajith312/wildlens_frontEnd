@@ -1,44 +1,40 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Col, Card, Badge, Form, Button, Image as BootstrapImage } from 'react-bootstrap';
 import { MdOutlineLocationOn, MdDelete, MdAddPhotoAlternate, MdEdit } from 'react-icons/md';
 import { RiMoneyRupeeCircleLine } from 'react-icons/ri';
 import { FaSave, FaTimes } from 'react-icons/fa';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'Components/CustomHooks';
+import { getAllTours } from 'Redux/Action/Tour.Action';
 
 const AdminTourDetails = () => {
 
+const dispatch = useDispatch()
 const [isEditing,setIsEditing] = useState(false)
-  const tour = {
-    title: "Bali Adventure Tour",
-    description: "Explore the beautiful island of Bali with our guided adventure tour package.",
-    days: 7,
-    country: "Indonesia",
-    budget: 35000,
-    imageGallery: [
-        "https://img.etb2bimg.com/files/cp/upload-16321079503320-safari.jpg",
-        "https://www.tourmyindia.com/blog//wp-content/uploads/2018/06/Willdife-Holidays-in-India.jpg",
-        "https://i.assetzen.net/i/9Sf9fjP1eYpd/w:1200/h:808/q:70.jpg",
-        "https://www.fondationsegre.org/wp-content/uploads/2019/11/RAP-Tiger-and-cubs-Bandipur_Augustine-Prince_WTI-1-750x400.jpg"
-      ],
-    placesCovered: [
-      { name: "Ubud", description: "Cultural heart of Bali with art markets and temples" },
-      { name: "Uluwatu", description: "Famous for its cliffside temple and surf spots" },
-      { name: "Seminyak", description: "Luxury beach resorts and vibrant nightlife" }
-    ],
-    inclusions: [
-      "6 nights accommodation",
-      "Daily breakfast",
-      "Airport transfers",
-      "Guided tours"
-    ],
-    exclusions: [
-      "International flights",
-      "Travel insurance",
-      "Personal expenses",
-      "Visa fees"
-    ]
-  };
+ const { id } = useParams()
+ const {tour_package_details} = useSelector((state)=>state.tourState)
+ const [tour,setTour] = useState(null)
+ const [selectedImage, setSelectedImage] = useState(null)
 
-  const selectedImage = tour.imageGallery[0];
+
+ useEffect(() => {
+  const tourDetail = tour_package_details?.find(t => t._id === id);
+  if (!tourDetail) {
+    dispatch(getAllTours())
+  } else {
+    setTour(tourDetail)
+  }
+}, [tour_package_details, id, dispatch]);
+
+useEffect(() => {
+  if (tour && !selectedImage) {
+    setSelectedImage(tour?.imageGallery?.[0] || null)
+  }
+}, [tour, selectedImage])
+
+
+
 
   return (
     <div className="container">
@@ -65,9 +61,7 @@ const [isEditing,setIsEditing] = useState(false)
         </div>
       </div>
 
-      {/* Main content */}
       <Row>
-        {/* Image gallery column */}
         <Col xs={12} lg={6} className="p-2">
           <Card className="h-100">
             <Card.Img
@@ -78,8 +72,8 @@ const [isEditing,setIsEditing] = useState(false)
             />
             <Card.Body>
               <div className="d-flex flex-wrap gap-2 justify-content-start">
-                {tour.imageGallery.map((img, index) => (
-                  <div key={index} className="position-relative">
+                {tour?.imageGallery?.map((img, index) => (
+                  <div key={index} className="position-relative" onClick={()=>setSelectedImage(img)}>
                     <BootstrapImage
                       src={img}
                       alt={`Tour ${index + 1}`}
@@ -122,11 +116,11 @@ const [isEditing,setIsEditing] = useState(false)
                   <Form.Label>Title</Form.Label>
                   <Form.Control
                     type="text"
-                    defaultValue={tour.title}
+                    defaultValue={tour?.title}
                   />
                 </Form.Group>
               ) : (
-                <h1 className="mb-3">{tour.title}</h1>
+                <h1 className="mb-3">{tour?.title}</h1>
               )}
 
               <div className="d-flex align-items-center flex-wrap mb-3 gap-2">
@@ -136,25 +130,25 @@ const [isEditing,setIsEditing] = useState(false)
                       <Form.Label>Days</Form.Label>
                       <Form.Control
                         type="number"
-                        defaultValue={tour.days}
+                        defaultValue={tour?.days}
                       />
                     </Form.Group>
                     <Form.Group controlId="country">
                       <Form.Label>Country</Form.Label>
                       <Form.Control
                         type="text"
-                        defaultValue={tour.country}
+                        defaultValue={tour?.country}
                       />
                     </Form.Group>
                   </>
                 ) : (
                   <>
                     <Badge bg="success">
-                      {tour.days} Days / {tour.days - 1} Nights
+                      {tour?.days} Days / {tour?.days - 1} Nights
                     </Badge>
                     <Badge bg="info">
                       <MdOutlineLocationOn className="me-1" />
-                      {tour.country}
+                      {tour?.country}
                     </Badge>
                   </>
                 )}
@@ -170,7 +164,7 @@ const [isEditing,setIsEditing] = useState(false)
                       </span>
                       <Form.Control
                         type="number"
-                        defaultValue={tour.budget}
+                        defaultValue={tour?.budget}
                       />
                     </div>
                   </Form.Group>
@@ -178,7 +172,7 @@ const [isEditing,setIsEditing] = useState(false)
                   <>
                     <h3 className="text-primary">
                       <RiMoneyRupeeCircleLine className="me-2" />
-                      {tour.budget.toLocaleString('en-IN')} INR
+                      {tour?.budget.toLocaleString('en-IN')} INR
                     </h3>
                     <p className="text-muted">Per person</p>
                   </>
@@ -193,23 +187,23 @@ const [isEditing,setIsEditing] = useState(false)
                     <Form.Control
                       as="textarea"
                       rows={3}
-                      defaultValue={tour.description}
+                      defaultValue={tour?.description}
                     />
                   </Form.Group>
                 ) : (
-                  <p><strong>Description:</strong> {tour.description}</p>
+                  <p><strong>Description:</strong> {tour?.description}</p>
                 )}
 
                 <h6 className="mt-4 mb-2">Places Covered</h6>
                 {isEditing ? (
                   <>
-                    {tour.placesCovered.map((place, index) => (
+                    {tour?.places_covered?.map((place, index) => (
                       <div key={index} className="mb-3 p-2 border rounded">
                         <Form.Group controlId={`placeName-${index}`} className="mb-2">
                           <Form.Label>Place Name</Form.Label>
                           <Form.Control
                             type="text"
-                            defaultValue={place.name}
+                            defaultValue={place?.name}
                           />
                         </Form.Group>
                         <Form.Group controlId={`placeDesc-${index}`}>
@@ -217,7 +211,7 @@ const [isEditing,setIsEditing] = useState(false)
                           <Form.Control
                             as="textarea"
                             rows={2}
-                            defaultValue={place.description}
+                            defaultValue={place?.description}
                           />
                         </Form.Group>
                         <Button
@@ -239,9 +233,9 @@ const [isEditing,setIsEditing] = useState(false)
                   </>
                 ) : (
                   <ul className="mb-1">
-                    {tour.placesCovered.map((place, index) => (
+                    {tour?.places_covered?.map((place, index) => (
                       <li key={index}>
-                        <strong>{place.name}</strong> – {place.description}
+                        <strong>{place?.name}</strong> – {place?.description}
                       </li>
                     ))}
                   </ul>
@@ -260,7 +254,7 @@ const [isEditing,setIsEditing] = useState(false)
               <h2 className="h4 mb-3 text-primary">Inclusions</h2>
               {isEditing ? (
                 <>
-                  {tour.inclusions.map((item, index) => (
+                  {tour?.inclusions?.map((item, index) => (
                     <div key={index} className="mb-2 d-flex align-items-center">
                       <Form.Control
                         type="text"
@@ -284,7 +278,7 @@ const [isEditing,setIsEditing] = useState(false)
                 </>
               ) : (
                 <ul className="list-unstyled mb-0">
-                  {tour.inclusions.map((item, index) => (
+                  {tour?.inclusions?.map((item, index) => (
                     <li key={index} className="mb-2 d-flex align-items-start">
                       <span className="me-2 text-success">✓</span>
                       <span>{item}</span>
@@ -301,7 +295,7 @@ const [isEditing,setIsEditing] = useState(false)
               <h2 className="h4 mb-3 text-primary">Exclusions</h2>
               {isEditing ? (
                 <>
-                  {tour.exclusions.map((item, index) => (
+                  {tour?.exclusions?.map((item, index) => (
                     <div key={index} className="mb-2 d-flex align-items-center">
                       <Form.Control
                         type="text"
@@ -325,7 +319,7 @@ const [isEditing,setIsEditing] = useState(false)
                 </>
               ) : (
                 <ul className="list-unstyled mb-0">
-                  {tour.exclusions.map((item, index) => (
+                  {tour?.exclusions?.map((item, index) => (
                     <li key={index} className="mb-2 d-flex align-items-start">
                       <span className="me-2 text-danger">✗</span>
                       <span>{item}</span>

@@ -47,13 +47,13 @@ const AccountActivation = () => {
             <h3 className="mt-4 fw-bold fs-2 text-white">WILDLENS TOUR</h3>
             <p className="fw-bold fs-4 text-info">Activate Your Account</p>
           </div>
-          <div className="px-lg-4 ">
+          <div className="px-3 px-lg-4 ">
             <Form className="login-form">
               <Form.Group className="mb-3" controlId="">
                 <Form.Control
                   type="email"
                   placeholder="Email"
-                  value={commonState?.login_data?.email}
+                  value={commonState?.login_data?.email|| ''}
                   onChange={(e) => {dispatch(handleRegisterCredentials({ email: e.target.value }))}}
                 />
               </Form.Group>
@@ -61,12 +61,12 @@ const AccountActivation = () => {
                 <Form.Control
                   type="text"
                   placeholder="OTP"
-                  value={commonState?.login_data?.otp}
+                  value={commonState?.login_data?.otp|| ''}
                   onChange={(e) => {dispatch(handleRegisterCredentials({ otp: e.target.value }))}}
                 />
               </Form.Group>
-              <ButtonComponent type='button' className='btn btn-success w-100 mb-3' clickFunction={handleActivateAccount} buttonName='Activate' />
-              <ButtonComponent type='button' className='btn btn-primary w-100' clickFunction={handleSumbitResendOtp} buttonName='Resend OTP' />
+              <ButtonComponent type='button' className='btn btn-success w-100 mb-3' clickFunction={handleActivateAccount} buttonName='Activate' loading={commonState?.loading} />
+              <ButtonComponent type='button' className='btn btn-primary w-100' clickFunction={handleSumbitResendOtp} buttonName='Resend OTP' loading={commonState?.updateLoadingTwo} />
             </Form>
           </div>
 

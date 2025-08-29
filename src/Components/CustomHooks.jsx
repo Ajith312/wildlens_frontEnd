@@ -10,11 +10,13 @@ import { updateScreenCurrentDimension } from 'Redux/Slice/Common.Slice';
 
 export const useCommonState = () => {
   const selectCommonState = (state) => state.commonState;
+  const selectTourState = (state)=>state.tourState;
+  const selectAdminState = (state)=>state.adminState
 
   const selectMemoizedCommonState = createSelector(
-    [selectCommonState],
-    (commonState) => (
-      { commonState }
+    [selectCommonState,selectTourState,selectAdminState],
+    (commonState,tourState,adminState) => (
+      { commonState,tourState ,adminState}
     )
   )
   return useSelector(selectMemoizedCommonState);
