@@ -36,7 +36,7 @@ export const handleLogin = ({payload,navigate}) => async (dispatch) => {
     } catch (error) {
       console.log('handleLogin',error)
       dispatch(updateLoading(false))
-      dispatch(updateToastMessage({ message:data?.message, type: "error" }))
+    dispatch(updateToastMessage({message: error?.response?.data?.message || "Something went wrong", type: "error"}))
     }
   };
 
@@ -56,7 +56,7 @@ export const handleRegister = ({payload,navigate})=>async(dispatch)=>{
     } catch (error) {
       console.log('Error in handleRegister ',error)
        dispatch(updateLoading(false))
-      dispatch(updateToastMessage({ message:data?.message, type: "error" }))
+      dispatch(updateToastMessage({message: error?.response?.data?.message || "Something went wrong", type: "error"}))
       
     }
   }
@@ -78,7 +78,7 @@ export const handleAccountActivation = ({payload,navigate})=>async(dispatch)=>{
       } catch(error) {
         console.log('Error in handleRegister ',error)
          dispatch(updateLoading(false))
-        dispatch(updateToastMessage({ message:data?.message, type: "error" }))
+        dispatch(updateToastMessage({message: error?.response?.data?.message || "Something went wrong", type: "error"}))
       }
   }
 
@@ -102,7 +102,7 @@ export const handleResendOtp = ({payload,navigate})=>async(dispatch)=>{
     } catch (error) {
       console.log('Error in handleResendOtp ',error)
        dispatch(updateLoadingTwo(false))
-      dispatch(updateToastMessage({ message:data?.message, type: "error" }))
+      dispatch(updateToastMessage({message: error?.response?.data?.message || "Something went wrong", type: "error"}))
     }
   }
 
@@ -120,13 +120,12 @@ export const handleForgotPassword = ({payload,navigate})=> async(dispatch)=>{
         dispatch(updateRegisterResponse())
          dispatch(updateLoading(false))
         dispatch(updateToastMessage({ message:data?.message, type: "error" }))
-        console.log('error')
       }
       
     } catch (error) {
       console.log('Error in handleForgotPassword ',error)
        dispatch(updateLoading(false))
-      dispatch(updateToastMessage({ message:data?.message, type: "error" }))
+      dispatch(updateToastMessage({message: error?.response?.data?.message || "Something went wrong", type: "error"}))
       
     }
   }
@@ -146,13 +145,12 @@ export const handleChangePassword = ({payload,navigate})=> async(dispatch)=>{
         dispatch(updateRegisterResponse())
          dispatch(updateLoading(false))
         dispatch(updateToastMessage({ message:data?.message, type: "error" }))
-        console.log('error')
       }
       
     } catch (error) {
       console.log('Error in handleChangePassword ',error)
        dispatch(updateLoading(false))
-      dispatch(updateToastMessage({ message:data?.message, type: "error" }))
+     dispatch(updateToastMessage({message: error?.response?.data?.message || "Something went wrong", type: "error"}))
       
     }
 
@@ -170,7 +168,7 @@ export const handlerefreshToken =()=> async(dispatch)=>{
         }
     } catch (error) {
        console.log(error)
-
+      dispatch(updateToastMessage({message: error?.response?.data?.message || "Something went wrong", type: "error"}))
     }
 }
 
@@ -180,11 +178,11 @@ export const getProfileDetails = ()=>async(dispatch)=>{
     if(data?.error_code === 200){
       dispatch(updateProfileDetails(data?.data))
     }else{
-      
+      dispatch(updateToastMessage({ message:data?.message, type: "error" }))
     }
   } catch (error) {
      console.log('Error in getProfileDetails ',error)
-      dispatch(updateToastMessage({ message:data?.message, type: "error" }))
+     dispatch(updateToastMessage({message: error?.response?.data?.message || "Something went wrong", type: "error"}))
   }
 }
 
@@ -195,7 +193,32 @@ export const handleLogout = (navigate)=>async(dispatch)=>{
     dispatch(clearUserDetails())
     navigate('/')
   } catch (error) {
-    console.log("handleLogout",error)
-    dispatch(updateToastMessage({ message:"Logout failed", type: "error" }))
+    console.log("handleLogout", error)
+    dispatch(updateToastMessage({ message: error?.response?.data?.message || "Something went wrong", type: "error" }))
+  }
+}
+
+export const editUserProfile = ()=> async (dispatch)=>{
+  try {
+    
+  } catch (error) {
+    console.log("handleLogout", error)
+    dispatch(updateToastMessage({ message: error?.response?.data?.message || "Something went wrong", type: "error" }))
+  }
+}
+
+export const editProfilePicture = (formdata)=> async (dispatch)=>{
+  try {
+    const {data} = await axiosInstance.post('user/upload-profileimage',formdata)
+    if(data?.error_code === 200){
+      dispatch(getProfileDetails())
+      dispatch(updateToastMessage({message:data?.message || "profile picture upload succesfully",type: "error"}))
+    }else{
+      dispatch(updateToastMessage({message:data?.message || "Failed to change profile picture",type: "error"}))
+    }
+    
+  } catch (error) {
+    console.log("handleLogout", error)
+    dispatch(updateToastMessage({ message: error?.response?.data?.message || "Something went wrong", type: "error" }))
   }
 }

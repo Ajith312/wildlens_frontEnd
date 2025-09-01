@@ -20,7 +20,7 @@ export const getAllUserDetails = () => async (dispatch) => {
     } catch (error) {
         console.log('getAllUserDetails', error)
         dispatch(updateLoding(false))
-        dispatch(updateToastMessage({ message: data?.message || "Something went wrong", type: "error" }))
+        dispatch(updateToastMessage({message: error?.response?.data?.message || "Something went wrong", type: "error"}))
 
     }
 }
@@ -39,7 +39,7 @@ export const getSingleUserDetails = (id)=>async(dispatch) =>{
     } catch (error) {
         console.log('getAllUserDetails', error)
         dispatch(updateLoding(false))
-        dispatch(updateToastMessage({ message: data?.message || "Something went wrong", type: "error" }))
+        dispatch(updateToastMessage({message: error?.response?.data?.message || "Something went wrong", type: "error"}))
         
     }
 }
@@ -55,6 +55,6 @@ export const handleUpdatePassword = (payload)=>async(dispatch)=>{
         
     } catch (error) {
          console.log('handleUpdatePassword', error)
-        dispatch(updateToastMessage({ message: data?.message || "Something went wrong", type: "error" }))
+        dispatch(updateToastMessage({message: error?.response?.data?.message || "Something went wrong", type: "error"}))
     }
 }

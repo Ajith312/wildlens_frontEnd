@@ -1,11 +1,25 @@
+import ButtonComponent from 'Components/Button/Button';
+import { useCommonState, useDispatch } from 'Components/CustomHooks';
 import React from 'react'
 import { Col, Form, Row, Card } from "react-bootstrap";
 import { FiPhoneCall } from "react-icons/fi";
 import { MdAddLocationAlt, MdAttachEmail } from "react-icons/md";
 import { SlCalender } from "react-icons/sl";
+import { handleSendEnquiry } from 'Redux/Action/Tour.Action';
+import { updateToastMessage } from 'Redux/Slice/Common.Slice';
+import { update_enquiry_details } from 'Redux/Slice/Tour.Slice';
 import Image from 'Utils/Image';
 
 const Contact = () => {
+  const {enquiry_details,loading } = useCommonState()?.tourState
+  const dispatch = useDispatch()
+
+  const sendEnquiry = ()=>{
+    if(!enquiry_details?.name || !enquiry_details?.email || !enquiry_details?.phone_number || !enquiry_details?.comments){
+      return dispatch(updateToastMessage({message:"All the fields are required",type: "error"}))
+    }
+    dispatch(handleSendEnquiry(enquiry_details))
+  }
   return (
     <div className="contact-container">
       <div className="position-relative text-center">
@@ -74,20 +88,20 @@ const Contact = () => {
                 <Form>
                   <Form.Group className="mb-3" controlId="formName">
                     <Form.Label>Name</Form.Label>
-                    <Form.Control type="text" placeholder="Enter Name" />
+                    <Form.Control type="text" placeholder="Enter Name" value={enquiry_details?.name} onChange={(e)=>dispatch(update_enquiry_details({name:e.target.value}))} />
                   </Form.Group>
 
                   <Row className="mb-3 g-2">
                     <Col md={6} className="mb-3 mb-md-0 pe-md-1">
                       <Form.Group controlId="formEmail">
                         <Form.Label>Email</Form.Label>
-                        <Form.Control type="email" placeholder="Enter email" />
+                        <Form.Control type="email" placeholder="Enter email" value={enquiry_details?.email} onChange={(e)=>dispatch(update_enquiry_details({email:e.target.value}))} />
                       </Form.Group>
                     </Col>
                     <Col md={6} className='ps-md-1'>
                       <Form.Group controlId="formPhone">
                         <Form.Label>Phone Number</Form.Label>
-                        <Form.Control type="tel" placeholder="Phone" />
+                        <Form.Control type="number" placeholder="Phone" value={enquiry_details?.phone_number} onChange={(e)=>dispatch(update_enquiry_details({phone_number:e.target.value}))} />
                       </Form.Group>
                     </Col>
                   </Row>
@@ -98,8 +112,12 @@ const Contact = () => {
                       as="textarea" 
                       rows={4} 
                       placeholder="Write Your Message"
+                      value={enquiry_details?.comments} 
+                      onChange={(e)=>dispatch(update_enquiry_details({comments:e.target.value}))}
                     />
                   </Form.Group>
+
+                  <ButtonComponent className="w-100 btn-success" buttonName="Submit Enquiry" clickFunction={sendEnquiry} loading={loading} />
                 </Form>
               </Card.Body>
             </Card>

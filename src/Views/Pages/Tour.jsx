@@ -1,86 +1,84 @@
 import React, { useEffect } from 'react';
-import {Row, Col, Card, Form, Button } from 'react-bootstrap';
+import { Row, Col, Card, Form, Button } from 'react-bootstrap';
 import TourCard from 'Components/Card/TourCard';
 import Image from 'Utils/Image';
-import { IoMdStar } from 'react-icons/io';
 import ButtonComponent from 'Components/Button/Button';
-import JsonData from 'Utils/JsonData';
-import { useDispatch } from 'Components/CustomHooks';
-import { getAllTours } from 'Redux/Action/Tour.Action';
-import { useSelector } from 'react-redux';
+import { useCommonState, useDispatch } from 'Components/CustomHooks';
+import { getAllTours,getCountryLists, handleFilterTours } from 'Redux/Action/Tour.Action';
+import { clearFilterInputs, update_filter_inputs } from 'Redux/Slice/Tour.Slice';
+import Spinner from 'Components/Spinner/CustomSpinner';
 
 const Tour = () => {
   const dispatch = useDispatch()
-  const tourDetails = []
-  const {tour_package_details} = useSelector((state)=>state?.tourState)
+  const { tour_package_details, country_details, filter_inputs, loading } = useCommonState()?.tourState
 
-useEffect(()=>{
-  dispatch(getAllTours())
+  useEffect(() => {
+    dispatch(getAllTours())
+    dispatch(getCountryLists())
+  }, [])
 
-},[])
+  const filterTours = () => {
+    dispatch(handleFilterTours(filter_inputs))
+  }
+
+  const resetFilters = () => {
+    dispatch(getAllTours())
+    dispatch(clearFilterInputs())
+  }
   return (
-    <div className="container-fluid d-flex flex-column p-0">
+    <div className="container-fluid d-flex flex-column p-0 h-100">
       <div className="coverImageContainer d-flex justify-content-center align-items-center position-relative">
-        <img src={Image.heroSection} alt="cover-image" className="coverImage w-100 h-100"/>
+        <img src={Image.heroSection} alt="cover-image" className="coverImage w-100 h-100" />
         <p className="coverText position-absolute text-white fw-bold">Explore Tours</p>
       </div>
 
-      <Row className='my-4'>
-        <Col xs={12} md={4} lg={3} className="mb-4">
-          <Card className="p-3  sticky-top" style={{ top: '100px' }}>
+      <Row className='my-4 px-3'>
+        <Col xs={12} md={12} lg={3} className="mb-4">
+          <Card className="p-3  sticky-top" style={{ top: '150px' }} >
             <h5 className="mb-3">Filter Tours</h5>
             <Form.Group className="mb-3">
               <Form.Label>Country</Form.Label>
-              <Form.Select>
-                <option value="">All Countries</option>
-                <option value="France">France</option>
-                <option value="Italy">Italy</option>
+              <Form.Select value={filter_inputs.country} onChange={(e) => dispatch(update_filter_inputs({ country: e.target.value }))}>
+                <option value="all">All Countries</option>
+                {country_details && country_details?.length > 0 ? country_details?.map((country, i) => {
+                  return <option key={i} value={country}>{country}</option>
+                }) : <option key="all" value="all">All</option>
+                }
               </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Price Range: $1,00,000 - $7,00,000</Form.Label>
-              <Form.Range min={0} max={300000}/>
-              <Form.Range min={500000} max={700000}/>
+              <Form.Label>Price Range: {filter_inputs?.min_price} -{filter_inputs?.max_price} </Form.Label>
+              <Form.Range min={0} max={30000} value={filter_inputs.min_price} onChange={(e) => dispatch(update_filter_inputs({ min_price: e.target.value }))} />
+              <Form.Range min={50000} max={700000} value={filter_inputs.max_price} onChange={(e) => dispatch(update_filter_inputs({ max_price: e.target.value }))} />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Duration (days)</Form.Label>
-              <Form.Select>
-                <option value="">Any</option>
+              <Form.Select value={filter_inputs.duration} onChange={(e) => dispatch(update_filter_inputs({ duration: e.target.value }))}>
+                <option value="all">Any</option>
                 <option value="3">3 Days</option>
                 <option value="5">5 Days</option>
                 <option value="7">7 Days</option>
               </Form.Select>
             </Form.Group>
-            <Form.Group className="mb-4">
-              <Form.Label>Minimum Rating</Form.Label>
-              <div>
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <Button
-                    key={star}
-                    variant="link"
-                    className={`p-0 me-1 text-muted`}
-                  >
-                    <span><IoMdStar className='text-muted' size={25} /></span>
-                  </Button>
-                ))}
-              </div>
-            </Form.Group>
-            <ButtonComponent className="btn-outline-danger w-100" buttonName="Reset Filters" />
+            <ButtonComponent className="btn-success w-100 mb-3" buttonName="Apply Filters" clickFunction={filterTours} />
+            <ButtonComponent className="btn-outline-danger w-100" buttonName="Reset Filters" clickFunction={resetFilters} />
           </Card>
         </Col>
 
-        <Col xs={12} md={8} lg={9} className="px-3">
-          <Row className="">
-            {
-              tour_package_details?.map((tour)=>(
-                <Col key={tour._id} xs={12} sm={6} lg={4} className='p-2 tour-card-box'>
-                <TourCard tour={tour} />
-              </Col>
-              ))
+        {loading ? <Col xs={12} md={12} lg={9} className="d-flex justify-content-center align-items-center" style={{ minHeight: "45vh" }}>
+          <Spinner />
+        </Col> : <Col xs={12} md={12} lg={9} className="px-3">
+          <Row className="h-100">
+            {tour_package_details && tour_package_details?.length > 0 ?
+              tour_package_details?.map((tour) => (
+                <Col key={tour._id} xs={12} sm={6} lg={6} xl={4} xxl={3} className='p-2 tour-card-box'>
+                  <TourCard tour={tour} />
+                </Col>
+              )) : <Col className='d-flex justify-content-center align-items-center' style={{ minHeight: "45vh" }}><p className='text-muted fs-3'>No Tours Available</p></Col>
             }
-            
+
           </Row>
-        </Col>
+        </Col>}
 
       </Row>
     </div>

@@ -1,11 +1,15 @@
+import { useCommonState, useDispatch } from 'Components/CustomHooks';
 import LinkComponent from 'Components/Router_components/LinkComponent';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container, Row, Col, Card, Image, Nav, Badge } from 'react-bootstrap';
 import { Outlet, useLocation } from 'react-router-dom';
+import { getProfileDetails } from 'Redux/Action/Common.Action';
 import Icons from 'Utils/Icons';
 
 const Profile = () => {
   const location = useLocation()
+  const dispatch = useDispatch()
+  const {profile_details} = useCommonState()?.commonState
   const currentPath = location.pathname.split('/').pop()
   const menuItems = [
     { id: 'personal-info', label: 'Personal Information', icon:Icons.profileIcon, link: '' },
@@ -16,6 +20,10 @@ const Profile = () => {
     { id: 'settings', label: 'Settings', icon:Icons.settingsIcon, link: 'settings' },
   ]
 
+    useEffect(() => {
+      dispatch(getProfileDetails())
+    }, [])
+
   return (
     <Container fluid className='py-4 px-lg-5'>
       <Row className='h-100'>
@@ -24,14 +32,14 @@ const Profile = () => {
             <Card.Body className='p-3'>
               <div className="text-center mb-4">
                 <Image
-                  src="https://randomuser.me/api/portraits/men/32.jpg"
+                  src={profile_details?.profile_picture}
                   roundedCircle
                   width={120}
                   height={120}
                   className="border border-3 border-primary object-fit-cover mb-2"
                 />
-                <h5 className="fw-bold mb-1">Ajith Arumugam</h5>
-                <p className="text-muted">ajith@gmail.com</p>
+                <h5 className="fw-bold mb-1">{profile_details?.user_name}</h5>
+                <p className="text-muted">{profile_details?.email}</p>
               </div>
               <div className="d-flex flex-column gap-2">
                 {menuItems?.map((item) => {
