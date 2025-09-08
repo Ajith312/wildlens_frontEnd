@@ -20,6 +20,8 @@
  import slider5 from "Assets/slider5.jpg"
  import slider6 from "Assets/slider6.jpg"
  import heroSection  from "Assets/hero-section.jpg"
+ import default_profile_pic from "Assets/default_profile.png"
+ import no_data  from "Assets/no_data.jpg"
 
 const Image = {
     authBg,
@@ -43,7 +45,9 @@ const Image = {
     slider4,
     slider5,
     slider6,
-    heroSection
+    heroSection,
+    default_profile_pic,
+    no_data
 }
 
 export default Image;

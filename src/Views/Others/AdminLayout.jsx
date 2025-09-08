@@ -4,7 +4,7 @@ import Sidebar from 'Components/Panel_compnent/Sidebar'
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 import { handleUpdateCanvasShow } from 'Redux/Action/Common.Action'
-import Image from 'Utils/Image'
+import AdminModal from 'Utils/AdminModal'
 import JsonData from 'Utils/JsonData'
 
 const AdminLayout = () => {
@@ -23,11 +23,10 @@ const AdminLayout = () => {
         menuOptions={sidebarMenus}
         header={true}
         footer={true}
-        // companyLogo={Image.CompanyLogo}
     />
 
     <div className="col">
-        <main className="w-100">
+        <main className="w-100 overflow-hidden">
             <header className='d-flex align-items-center'>
                 <div className="container-fluid">
                     <Header
@@ -39,9 +38,10 @@ const AdminLayout = () => {
                 </div>
             </header>
 
-            <div className="main">
+            <div className="main overflow-auto">
                 <div className="container-fluid">
                     <Outlet />
+                    <AdminModal />
                 </div>
             </div>
         </main>

@@ -1,22 +1,21 @@
 import ButtonComponent from 'Components/Button/Button'
 import { useCommonState, useDispatch } from 'Components/CustomHooks'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef } from 'react'
 import { Card, Image, Button, Form, Row, Col } from 'react-bootstrap'
-import { editProfilePicture, getProfileDetails } from 'Redux/Action/Common.Action'
+import { editProfileInfo, editProfilePicture, getProfileDetails } from 'Redux/Action/Common.Action'
 import { RiEdit2Fill } from "react-icons/ri";
+import { updateProfileDetails, updateProfileEditing } from 'Redux/Slice/Common.Slice'
 
 const ProfileInfo = () => {
   const dispatch = useDispatch()
-  const { profile_details } = useCommonState()?.commonState
-  const [profileImage, setProfileImage] = useState(profile_details?.profile_picture)
+  const { profile_details,profile_editing } = useCommonState()?.commonState
   const fileInputRef = useRef(null)
 
 
   const handleImageChange = (e) => {
     const file = e.target.files[0]
-    if (file) {
-      const imageURL = URL.createObjectURL(file)
-      setProfileImage(imageURL)
+    if (!file) {
+      return
     }
 
     const formdata = new FormData()
@@ -59,7 +58,7 @@ const ProfileInfo = () => {
             />
           </div>
 
-          <h3 className="mt-3 fw-bold">{profile_details?.user_name}</h3>
+          <h3 className="mt-3 fw-bold">{`${profile_details?.user_name} ${profile_details?.last_name}`}</h3>
         </div>
 
         <Form>
@@ -72,7 +71,8 @@ const ProfileInfo = () => {
                   className="py-2 rounded-3"
                   value={profile_details?.user_name}
                   placeholder='First Name'
-                  readOnly
+                 readOnly={!profile_editing} 
+                  onChange={(e)=>dispatch(updateProfileDetails({user_name:e.target.value}))}
                 />
               </Form.Group>
             </Col>
@@ -84,7 +84,8 @@ const ProfileInfo = () => {
                   className="py-2 rounded-3"
                   value={profile_details?.last_name}
                   placeholder='Last Name'
-                  readOnly
+                  readOnly={!profile_editing} 
+                  onChange={(e)=>dispatch(updateProfileDetails({last_name:e.target.value}))}
                 />
               </Form.Group>
             </Col>
@@ -96,7 +97,8 @@ const ProfileInfo = () => {
                   className="py-2 rounded-3"
                   value={profile_details?.email}
                   placeholder='Email'
-                  readOnly
+                  readOnly={!profile_editing} 
+                  onChange={(e)=>dispatch(updateProfileDetails({email:e.target.value}))}
                 />
               </Form.Group>
             </Col>
@@ -108,7 +110,8 @@ const ProfileInfo = () => {
                   className="py-2 rounded-3"
                   value={profile_details?.phone_number}
                   placeholder='Phone Number'
-                  readOnly
+                  readOnly={!profile_editing} 
+                  onChange={(e)=>dispatch(updateProfileDetails({phone_number:e.target.value}))}
                 />
               </Form.Group>
             </Col>
@@ -120,15 +123,23 @@ const ProfileInfo = () => {
                   rows={2} 
                   value={profile_details?.address} 
                   placeholder='Address' 
-                  readOnly
+                  readOnly={!profile_editing} 
+                  onChange={(e)=>dispatch(updateProfileDetails({address:e.target.value}))}
                 />
               </Form.Group>
             </Col>
           </Row>
 
           <div className="d-flex justify-content-end gap-3 mt-4">
-            <ButtonComponent className="btn btn-outline-secondary px-4 rounded-3" buttonName="Cancel" />
-            <ButtonComponent className="btn btn-success px-4 rounded-3" buttonName="Edit Profile" />
+            <ButtonComponent className="btn btn-outline-secondary px-4 rounded-3" buttonName="Cancel" clickFunction={()=>{
+              dispatch(updateProfileEditing(false))
+            }} />
+            <ButtonComponent 
+            className="btn btn-success px-4 rounded-3" 
+            buttonName={profile_editing ? "Save Changes" : "Edit Profile"}
+            clickFunction={profile_editing ? ()=>dispatch(editProfileInfo(profile_details)) : ()=> dispatch(updateProfileEditing(true))}
+            />
+            
           </div>
         </Form>
       </Card.Body>

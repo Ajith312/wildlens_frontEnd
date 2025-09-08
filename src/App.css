@@ -294,3 +294,8 @@ header {
   border: 1px solid var(--btn-brand-border-color) !important;
   color: var(--btn-brand-color) !important;
 }
+
+.model_height_lg {
+  height: 41rem !important;
+  overflow-y: auto;
+}

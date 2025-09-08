@@ -1,5 +1,5 @@
-import { updateLoding, updateSelectedUserDetails, updateUserDetails } from "Redux/Slice/Admin.Slice"
-import { updateToastMessage } from "Redux/Slice/Common.Slice"
+import { clear_new_booking_inputs, update_dropdown_tour_details, update_show_modal, updateBookingDetails, updateLoding, updateSelectedUserDetails, updateUserDetails } from "Redux/Slice/Admin.Slice"
+import { updateModalShow, updateToastMessage } from "Redux/Slice/Common.Slice"
 import axiosInstance from "Services/axiosInstance"
 
 
@@ -44,17 +44,82 @@ export const getSingleUserDetails = (id)=>async(dispatch) =>{
     }
 }
 
-export const handleUpdatePassword = (payload)=>async(dispatch)=>{
+export const getAllBookingDetails =({ page = 1, limit = 10, search = "", status = "" } = {}) =>async (dispatch) => {
     try {
-        const {data} = await axiosInstance.post("user/change-password",payload)
+      const { data } = await axiosInstance.get("tour/get-all-bookings", {params: { page, limit, search, status }})
+
+      if (data?.error_code === 200) {
+        dispatch(updateBookingDetails(data?.data));
+      } else {
+        dispatch(updateToastMessage({message: data?.message || "Failed to fetch booking details",type: "error"}))
+      }
+    } catch (error) {
+      console.log("Error in getAllBookingDetails", error);
+      dispatch(updateToastMessage({message:error?.response?.data?.message || "Something went wrong",type: "error"}))
+    }
+  };
+
+  export const getDropDownTourDetails = ()=>async(dispatch)=>{
+    try {
+        
+        const { data} = await axiosInstance.get('tour/get-alltours-admin')
         if(data?.error_code === 200){
-            dispatch(updateToastMessage({ message: data?.message || "Something went wrong", type: "success" }))
+            dispatch(update_dropdown_tour_details(data?.data))
+        }else{ 
+            dispatch(updateToastMessage({message: data?.message || "Failed to fetch tour details",type: "error"}))
+        }
+    } catch (error) {
+         console.log("Error in getDropDownTourDetails", error);
+      dispatch(updateToastMessage({message:error?.response?.data?.message || "Something went wrong",type: "error"}))
+    }
+  }
+
+  export const bookTourByAdmin =(payload)=>async(dispatch,getState)=>{
+    try {
+        const { data} =  await axiosInstance.post('tour/book-tour-byadmin',payload)
+        if(data?.error_code === 200){
+            const {booking_filter_inputs} = getState()?.adminState || {}
+            dispatch(updateModalShow({}))
+            dispatch(getAllBookingDetails({status: booking_filter_inputs?.status || "all",search: booking_filter_inputs?.search || ""}))
+            dispatch(clear_new_booking_inputs())
+
         }else{
-            dispatch(updateToastMessage({ message: data?.message || "Something went wrong", type: "error" }))
+            dispatch(updateToastMessage({message: data?.message || "Failed to book a tour",type: "error"}))
         }
         
     } catch (error) {
-         console.log('handleUpdatePassword', error)
-        dispatch(updateToastMessage({message: error?.response?.data?.message || "Something went wrong", type: "error"}))
+        console.log("Error in bookTourByAdmin", error);
+        dispatch(updateToastMessage({ message: error?.response?.data?.message || "Something went wrong", type: "error" }))
     }
-}
+  }
+
+  export const handleConfirmBooking = (id)=>async(dispatch,getState)=>{
+    try {
+        const {data} = await axiosInstance.patch(`tour/confirm-booking/${id}`)
+        if(data?.error_code === 200){
+             const {booking_filter_inputs} = getState()?.adminState || {}
+            dispatch(updateModalShow({}))
+            dispatch(getAllBookingDetails({status: booking_filter_inputs?.status || "all",search: booking_filter_inputs?.search || ""}))
+        }
+        
+    } catch (error) {
+         console.log("Error in bookTourByAdmin", error);
+        dispatch(updateToastMessage({ message: error?.response?.data?.message || "Something went wrong", type: "error" }))
+    }
+  }
+
+
+  export const handleCancelBooking = (id)=>async(dispatch,getState)=>{
+    try {
+        const {data} = await axiosInstance.patch(`tour/cancel-booking/${id}`)
+        if(data?.error_code === 200){
+             const {booking_filter_inputs} = getState()?.adminState || {}
+            dispatch(updateModalShow({}))
+            dispatch(getAllBookingDetails({status: booking_filter_inputs?.status || "all",search: booking_filter_inputs?.search || ""}))
+        }
+        
+    } catch (error) {
+         console.log("Error in bookTourByAdmin", error);
+        dispatch(updateToastMessage({ message: error?.response?.data?.message || "Something went wrong", type: "error" }))
+    }
+  }

@@ -8,13 +8,23 @@ let initialState = {
     canvasShow:false,
     loading:false,
     loadingTwo:false,
+    profile_editing:false,
+    modal: {
+        show: false,
+        size: "md",
+        from: null,
+        type: null,
+        close_btn: false,
+        enable_lg_autoScroll:false,
+        modal_data:null,
+    },
 
     login_data: {
     
     },
     user_details:{
-        token:Cookies.get('token'),
-        role:Cookies.get('user_role')
+        token:"",
+        role:""
     },
     toast_details:{
         type:'',
@@ -22,6 +32,11 @@ let initialState = {
     },
     profile_details:{
 
+    },
+   passwordInputs:{
+        current_password:"",
+        password:"",
+        confirm_password:""
     }
     
 }
@@ -39,6 +54,9 @@ const commonSlice = createSlice({
         },
         updateLoading:(state,action)=>{
             state.loading = action.payload
+        },
+        updateProfileEditing:(state,action)=>{
+            state.profile_editing = action.payload
         },
         updateLoadingTwo:(state,action)=>{
             state.loadingTwo = action.payload
@@ -83,15 +101,50 @@ const commonSlice = createSlice({
             state.user_details.token = action?.payload;
         },
         updateProfileDetails:(state,action)=>{
-            state.profile_details = action.payload
+            const profileDetails = action?.payload || {}
+            Object.entries(profileDetails).forEach(([key,value])=>{
+                state.profile_details[key]=value
+            })
         },
-        clearUserDetails:(state,action)=>{
+        clearUserDetails:(state)=>{
             state.user_details={
                 token:"",
                 role:""
             }
-        }
+        },
+        updatePasswordInputs:(state,action)=>{
+            const [key, value] = Object.entries(action?.payload)[0] || [];
+            state.passwordInputs[key] = value || '';
+        },
+        clearPasswordInputs:(state)=>{
+            state.passwordInputs={
+                current_password: "",
+                password: "",
+                confirm_password: ""
 
+            }
+        },
+           updateModalShow(state, actions) {
+            const { show, size, modal_from, modal_type, close_btn, data } = actions.payload;
+            state.modal.show = show
+            state.modal.size = size || "md"
+            state.modal.from = modal_from || null
+            state.modal.type = modal_type || null
+            state.modal.close_btn = close_btn || false
+            state.modal.modal_data = data || null
+        },
+
+    },
+
+    extraReducers:(builder)=>{
+        builder 
+        .addMatcher((action)=>["commonSlice/handleLogin"].includes(action.type),
+        (state,action)=>{
+            
+        }
+    
+    
+    )
     }
 
 })
@@ -112,6 +165,10 @@ export const {
     updateProfileDetails,
     updateLoading,
     clearUserDetails,
-    updateLoadingTwo
+    updateLoadingTwo,
+    updateProfileEditing,
+    updatePasswordInputs,
+    clearPasswordInputs,
+    updateModalShow
 } = actions
 export default reducer

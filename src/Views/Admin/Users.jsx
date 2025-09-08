@@ -15,7 +15,7 @@ const Users = () => {
   return (
     <Row className="row">
       {user_details?.map(user => (
-        <Col key={user.id} xs={12} sm={6} lg={4} xl={3} className="p-2">
+        <Col key={user._id} xs={12} sm={6} lg={4} xl={3} className="p-2">
           <UserCard user={user} />
         </Col>
       ))}

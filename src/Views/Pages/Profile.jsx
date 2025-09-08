@@ -38,7 +38,7 @@ const Profile = () => {
                   height={120}
                   className="border border-3 border-primary object-fit-cover mb-2"
                 />
-                <h5 className="fw-bold mb-1">{profile_details?.user_name}</h5>
+                <h5 className="fw-bold mb-1">{`${profile_details?.user_name} ${profile_details?.last_name}`}</h5>
                 <p className="text-muted">{profile_details?.email}</p>
               </div>
               <div className="d-flex flex-column gap-2">

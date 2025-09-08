@@ -1,12 +1,13 @@
 import { useCommonState } from 'Components/CustomHooks';
 import Modal from 'react-bootstrap/Modal';
 import { useDispatch } from 'react-redux';
+import { updateModalShow } from 'Redux/Slice/Common.Slice';
 // import { updateModalShow } from 'Slices/Common_Slice/Common_slice';
 
 const ModalComponent = ({
   componentFrom,
   onHide,
-  modalShow,
+  show,
   modalSize,
   modalClassname,
   modalDialogClassName,
@@ -33,14 +34,14 @@ const ModalComponent = ({
   return (
 
     <Modal
-      show={modalShow}
+      show={show}
       size={modalSize}
       backdrop={modalClickOutsideHide ? "" : "static"}
       fullscreen={modalFullscreen}
       centered={modalCentered}
       contentClassName={modalClassname}
       dialogClassName={modalDialogClassName}
-      onHide={onHide}
+      onHide={() => dispatch(updateModalShow({}))}
     >
 
       {/* Header */}

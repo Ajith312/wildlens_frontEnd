@@ -2,17 +2,12 @@ import ButtonComponent from 'Components/Button/Button'
 import { useCustomNavigate } from 'Components/CustomHooks'
 import LinkComponent from 'Components/Router_components/LinkComponent'
 import React from 'react'
+import JsonData from 'Utils/JsonData'
 
 const Footer = () => {
   const navigate = useCustomNavigate()
+  const { footerBtnDetails} = JsonData()?.jsonOnly
 
-    const footerBtnDetails = [
-        {link:'home',name:'Home'},
-        {link:'about',name:'About'},
-        {link:'tour',name:'Tour Packages'},
-        {link:'gallery',name:'Gallery'},
-        {link:'contact',name:'Contact'},
-    ]
   return (
     <div className='footer-main-container bg-dark d-flex flex-column justify-content-center align-items-center'>
       <div className="footer-container w-75 h-100 d-flex flex-column flex-md-row ">
@@ -24,7 +19,7 @@ const Footer = () => {
             </div>
           <div className="col-6 d-flex flex-column justify-content-start align-items-start gap-2 my-5">
               <h3 className='text-white'>Quick Link</h3>
-              {footerBtnDetails.map((btn,i)=>{
+              {footerBtnDetails?.map((btn,i)=>{
                     return(
                         <LinkComponent to={btn.link} className="btn btn-outline-secondary w-75 footerBtn text-secondary" title={btn.name} key={i} />
                     )

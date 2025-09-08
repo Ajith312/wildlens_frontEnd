@@ -4,7 +4,7 @@ import React from 'react';
 import { Card, Badge, Image, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { FiMail, FiPhone, FiUser, FiCalendar } from 'react-icons/fi';
 import {format} from "date-fns"
-
+import Images from 'Utils/Image';
 const UserCard = ({ user }) => {
     const navigate = useCustomNavigate()
   const renderTooltip = (text) => (
@@ -16,7 +16,7 @@ const UserCard = ({ user }) => {
       <Card.Body className="text-center p-3 d-flex flex-column">
         <div className="mb-3 mx-auto position-relative">
           <Image
-            src={user?.profile_picture}
+            src={user?.profile_picture || Images.default_profile_pic}
             roundedCircle
             width={100}
             height={100}

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import { Fragment } from "react"
 import Select from 'react-dropdown-select'
 
 const ReactDropdownSelect = ({
@@ -13,26 +13,19 @@ const ReactDropdownSelect = ({
     valueField,
     className,
     create,
-    disabled
+    disabled,
+    placeholder
 }) => {
- 
+
     return (
         <Fragment>
-            {
-                name ?
-                    <h6 className="text-secondary mt-2 mb-0 fs-14">
-                        {name}
-                        {
-                            isMandatory ?
-                                <span className='text-danger ms-1'>*</span>
-                                :
-                                null
-                        }
-
-                    </h6>
-                    :
-                    null
-            }
+            {name ?
+                <h6 className="text-secondary mt-2 mb-0 fs-14 fw-bold">
+                    {name}
+                    {isMandatory ? <span className='text-danger ms-1'>*</span> : null}
+                </h6>
+                :
+                null}
             <Select
                 multi={multi}
                 options={options}
@@ -43,6 +36,7 @@ const ReactDropdownSelect = ({
                 onChange={change}
                 className={className}
                 disabled={disabled}
+                placeholder={placeholder}
             />
         </Fragment>
     )

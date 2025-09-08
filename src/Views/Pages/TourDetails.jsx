@@ -214,7 +214,7 @@ const TourDetails = () => {
           <Col xs={12} lg={6} className="p-2">
             <Card className="h-100 border-0">
               <Card.Body>
-                <h1 className="mb-3">{tour.title}</h1>
+                <h1 className="mb-3">{tour?.title}</h1>
                 <div className="d-flex align-items-center flex-wrap mb-3 gap-2">
                   <Badge bg="success">
                     {tour?.days} Days / {tour?.days - 1} Nights
@@ -228,7 +228,7 @@ const TourDetails = () => {
                 <div className="mb-4">
                   <h3 className="text-primary">
                     <RiMoneyRupeeCircleLine className="me-2" />
-                    {tour.budget.toLocaleString('en-IN')} INR
+                    {tour?.budget.toLocaleString('en-IN')} INR
                   </h3>
                   <p className="text-muted">Per person</p>
                 </div>
@@ -267,7 +267,7 @@ const TourDetails = () => {
                 <h2 className="h4 mb-3 text-primary">Inclusions</h2>
                 {tour?.inclusions?.length > 0 ? (
                   <ul className="list-unstyled mb-0">
-                    {tour.inclusions.map((item, index) => (
+                    {tour?.inclusions?.map((item, index) => (
                       <li key={index} className="mb-2 d-flex align-items-start">
                         <span className="me-2 text-success">✓</span>
                         <span>{item}</span>
@@ -286,7 +286,7 @@ const TourDetails = () => {
                 <h2 className="h4 mb-3 text-primary">Exclusions</h2>
                 {tour?.exclusions?.length > 0 ? (
                   <ul className="list-unstyled mb-0">
-                    {tour.exclusions.map((item, index) => (
+                    {tour?.exclusions?.map((item, index) => (
                       <li key={index} className="mb-2 d-flex align-items-start">
                         <span className="me-2 text-danger">✗</span>
                         <span>{item}</span>

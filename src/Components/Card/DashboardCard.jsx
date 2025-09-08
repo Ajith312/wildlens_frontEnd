@@ -11,12 +11,9 @@ const DashboardCard = ({
   className
 }) => {
   return (
-    <Card className={`h-100 shadow-sm ${className}`}>
+    <Card className={`h-100  ${className}`}>
       <Card.Header className='d-flex justify-content-between align-items-center border-0 bg-transparent p-3'>
-        <h5 className='mb-0 fw-normal'>{item?.title}</h5>
-        <button className='btn btn-sm btn-icon' aria-label="More options">
-          {Icons.moreIcon}
-        </button>
+        <h5 className='mb-0 fw-normal text-primary'>{item?.title}</h5>
       </Card.Header>
       
       <Card.Body className='p-3 pt-0'>

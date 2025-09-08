@@ -6,11 +6,15 @@ import { useParams } from 'react-router-dom';
 import { useCommonState, useDispatch } from 'Components/CustomHooks';
 import { getSingleUserDetails } from 'Redux/Action/Admin.Action';
 import { format } from 'date-fns';
+import Images from "Utils/Image"
+import TableComp from 'Components/Table/TableComp';
+import JsonData from 'Utils/JsonData';
 
 const UserDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch()
   const { selected_userdetails } = useCommonState()?.adminState
+  const { bookingTableheadings,bookingTableKeys} = JsonData()?.jsonOnly
 
   useEffect(() => {
     if (!id) return
@@ -44,21 +48,6 @@ const UserDetails = () => {
   const upcoming_details = selected_userdetails?.booking_details?.filter(tour => tour.tour_status == "pending")
   const completed_details = selected_userdetails?.booking_details?.filter(tour => tour.tour_status == "completed")
 
-  const getStatusBadge = (status) => {
-    switch (status) {
-      case 'confirmed':
-        return <Badge bg="primary" className='mb-0 p-2'>Confirmed</Badge>;
-      case 'pending':
-        return <Badge bg="warning" className='mb-0 p-2'>Pending</Badge>;
-      case 'completed':
-        return <Badge bg="success" className='mb-0 p-2'>Completed</Badge>;
-      case 'cancelled':
-        return <Badge bg="danger" className='mb-0 p-2'>Cancelled</Badge>;
-      default:
-        return <Badge bg="secondary" className='mb-0 p-2'>Unknown</Badge>;
-    }
-  };
-
   return (
     <div className="container-fluid">
       <div className="d-flex justify-content-between align-items-center mb-4">
@@ -73,7 +62,7 @@ const UserDetails = () => {
           <Card className="h-100">
             <Card.Body className="text-center">
               <Image
-                src={selected_userdetails?.profile_picture}
+                src={selected_userdetails?.profile_picture || Images.default_profile_pic}
                 roundedCircle
                 width={120}
                 height={120}
@@ -107,12 +96,8 @@ const UserDetails = () => {
         <div className="col-lg-8 p-2">
           <Card className="h-100 border-0">
             <Card.Body className="p-0">
-              <Tabs
-                defaultActiveKey="upcoming"
-                className="custom-tabs mb-3 px-3 pt-2"
-              >
-                <Tab
-                  eventKey="upcoming"
+              <Tabs defaultActiveKey="upcoming" className="custom-tabs mb-3 px-3 pt-2">
+                <Tab eventKey="upcoming"
                   title={<div className="d-flex align-items-center">
                     <span>Upcoming</span>
                     {upcoming_details?.length > 0 && (
@@ -123,33 +108,15 @@ const UserDetails = () => {
                   </div>
                   }
                 >
-                  <div className="row">
-                    {upcoming_details?.length > 0 ? (
-                      upcoming_details?.map((booking, index) => (
-                        <div className="col-md-6 p-2" key={index}>
-                          <Card className="">
-                            <Card.Body>
-                              <div className="d-flex justify-content-between align-items-start">
-                                <div>
-                                  <h5 className="mb-1">{booking?.title}</h5>
-                                  <p className="mb-1 text-muted">Date: {format(new Date(booking?.booking_date), "dd/MM/yyyy")}</p>
-                                  <p className="mb-1 text-muted">Guests: {booking?.persons}</p>
-                                  <p className="mb-2 text-muted">Amount: {booking?.budget}</p>
-                                  <p className="mb-2 text-muted">Payment Status: {getStatusBadge(booking?.payment_status)}</p>
-                                  <p className="mb-2 text-muted">Booking Status: {getStatusBadge(booking?.booking_status)}</p>
-                                </div>
-                                <Button variant="light" size="sm">
-                                  <BsThreeDotsVertical />
-                                </Button>
-                              </div>
-                            </Card.Body>
-                          </Card>
-                        </div>
-                      ))
-                    ) : (
-                      <div className="text-center text-muted py-4">No upcoming bookings</div>
-                    )}
-                  </div>
+                  <section className='overflow-auto booking-table' style={{ minHeight: "15vh" }}>
+                    <TableComp
+                      tableHeadings={bookingTableheadings}
+                      tableKeys={bookingTableKeys}
+                      tableData={upcoming_details}
+                      showIndex={true}
+                      showAction={false}
+                    />
+                  </section>
 
                 </Tab>
                 <Tab eventKey="history"
@@ -163,33 +130,16 @@ const UserDetails = () => {
                   </div>
                   }
                 >
-                  <div className="row">
-                    {completed_details?.length > 0 ? (
-                      completed_details?.map((booking, index) => (
-                        <div className="col-md-6 p-2" key={index}>
-                          <Card className="">
-                            <Card.Body>
-                              <div className="d-flex justify-content-between align-items-start">
-                                <div>
-                                  <h5 className="mb-1">{booking?.title}</h5>
-                                  <p className="mb-1 text-muted">Date: {format(new Date(booking?.booking_date), "dd/MM/yyyy")}</p>
-                                  <p className="mb-1 text-muted">Guests: {booking?.persons}</p>
-                                  <p className="mb-2 text-muted">Amount: {booking?.budget}</p>
-                                  <p className="mb-2 text-muted">Payment Status: {getStatusBadge(booking?.payment_status)}</p>
-                                  <p className="mb-2 text-muted">Booking Status: {getStatusBadge(booking?.booking_status)}</p>
-                                </div>
-                                <Button variant="light" size="sm">
-                                  <BsThreeDotsVertical />
-                                </Button>
-                              </div>
-                            </Card.Body>
-                          </Card>
-                        </div>
-                      ))
-                    ) : (
-                      <div className="text-center text-muted py-4">No booking history</div>
-                    )}
-                  </div>
+
+                  <section className='overflow-auto booking-table' style={{ minHeight: "15vh" }}>
+                    <TableComp
+                      tableHeadings={bookingTableheadings}
+                      tableKeys={bookingTableKeys}
+                      tableData={completed_details}
+                      showIndex={true}
+                      showAction={false}
+                    />
+                  </section>
                 </Tab>
               </Tabs>
             </Card.Body>

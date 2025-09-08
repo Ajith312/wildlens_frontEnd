@@ -284,6 +284,15 @@ img.rounded-circle {
   }
 }
 
+.filterTabBtnActive{
+  background-color: #157347;
+  padding: 5px 7px;
+  border-radius: 5px;
+  font-weight: 800;
+  color: #fff;
+  cursor: pointer;
+}
+
 .filterTabBtn{
   background-color: white;
   padding: 5px 7px;
@@ -358,5 +367,47 @@ img.rounded-circle {
     transform: rotate(360deg);
   }
 }
+.pagination .page-link:focus {
+  box-shadow: none !important;
+  outline: none !important;
+}
+.pagination .active .page-link {
+  background-color: #0d7c86 !important;
+  border-color: #0d7c86 !important;
+  color: #fff !important;
+}
+.table-head{
+  background-color: #0d7c86 !important;
+  color: #fff !important;
+  text-align: center;
+}
+
+.booking-table {
+  width: "100%";
+  overflow: auto;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+
+@media screen and (max-width: 425px) {
+  .booking-table {
+    max-width: 375px !important; 
+    overflow-x: auto !important;        
+  }
+
+  .booking-table table {
+     min-width: 375px !important;
+  }
+}
+
+@media screen and (max-width: 800px){
+  .admin-bookings{
+    width: 100vw !important;
+  }
+}
+
+
+
+
 
 

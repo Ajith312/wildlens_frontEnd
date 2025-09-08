@@ -71,7 +71,7 @@ const TourCard = ({ tour,admin=false }) => {
         </Card.Footer> :
            <Card.Footer className="bg-white">
            <div className="tourcard-footer d-flex flex-column flex-sm-row justify-content-sm-between justify-content-center align-items-center p-2 gap-2">
-              <ButtonComponent className='btn-outline-primary w-100 w-md-50 ' buttonName='Edit' clickFunction={()=>console.log("tour?.id")} />
+              <ButtonComponent className='btn-outline-primary w-100 w-md-50 ' buttonName='Edit' clickFunction={()=> navigate(`/admin/packages/${tour._id}`)} />
               <ButtonComponent className='btn-outline-danger w-100 w-md-50 ' buttonName='Delete' clickFunction={()=>console.log("tour?.id",tour?._id)} />
            </div>
          </Card.Footer>
