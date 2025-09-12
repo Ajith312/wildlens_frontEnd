@@ -20,7 +20,6 @@ export const handleAddTour = ({payload,navigate})=>async(dispatch)=>{
 
         }else{
         dispatch(updateToastMessage({ message:data?.message, type: "error" }))
-        console.log('error')
       }
     } catch (error) {
         console.log(error)
@@ -46,16 +45,6 @@ export const getAllTours = () => async (dispatch) => {
         dispatch(updateLoding(false))
         dispatch(updateToastMessage({message: error?.response?.data?.message || "Something went wrong", type: "error"}))
 
-    }
-}
-
-export const deleteTourPackages = ()=>async(dispatch)=>{
-    try {
-        
-    } catch (error) {
-     console.log(error)
-     dispatch(updateToastMessage({message: error?.response?.data?.message || "Something went wrong", type: "error"}))
-        
     }
 }
 

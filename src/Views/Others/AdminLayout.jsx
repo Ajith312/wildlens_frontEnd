@@ -1,9 +1,9 @@
 import { useCommonState, useCustomNavigate, useDispatch } from 'Components/CustomHooks'
 import Header from 'Components/Panel_compnent/Header'
 import Sidebar from 'Components/Panel_compnent/Sidebar'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
-import { handleUpdateCanvasShow } from 'Redux/Action/Common.Action'
+import { getProfileDetails, handleUpdateCanvasShow } from 'Redux/Action/Common.Action'
 import AdminModal from 'Utils/AdminModal'
 import JsonData from 'Utils/JsonData'
 
@@ -12,6 +12,10 @@ const AdminLayout = () => {
     const {commonState} = useCommonState()
     const navigate = useCustomNavigate()
     const { sidebarMenus } = JsonData()?.jsonOnly;
+
+    useEffect(() => {
+        dispatch(getProfileDetails())
+    }, [])
 
  
   return (

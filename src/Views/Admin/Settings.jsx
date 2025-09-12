@@ -1,6 +1,8 @@
 import ButtonComponent from 'Components/Button/Button';
+import ButtonLoading from 'Components/Button/Buttonloading';
 import { useCommonState, useDispatch } from 'Components/CustomHooks';
 import PasswordInput from 'Components/Input/PasswordInput';
+import Spinner from 'Components/Spinner/CustomSpinner';
 import React, { useEffect, useRef } from 'react';
 import { Container, Row, Col, Card, Form, Button, Image } from 'react-bootstrap';
 import { RiEdit2Fill } from "react-icons/ri";
@@ -11,7 +13,7 @@ import Images from "Utils/Image"
 
 const Settings = () => {
   const dispatch = useDispatch()
-  const { profile_details, passwordInputs, profile_editing } = useCommonState()?.commonState
+  const { profile_details, passwordInputs, profile_editing,loading } = useCommonState()?.commonState
   const fileInputRef = useRef(null)
 
 
@@ -22,14 +24,20 @@ const Settings = () => {
   }, [profile_details])
 
   const changeUserPassword = () => {
-    const { current_password, password, confirm_password } = passwordInputs || {}
+    let { current_password, password, confirm_password } = passwordInputs || {}
+    current_password = current_password?.trim()
+    password = password?.trim()
+    confirm_password = confirm_password?.trim()
+
     if (!current_password || !password || !confirm_password) {
       return dispatch(updateToastMessage({ message: "All fields are required", type: "error" }))
+    }
+    if (!/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,20}$/.test(password)) {
+      return dispatch(updateToastMessage({ message: "Password should contain 8–20 characters, with at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character", type: "error" }))
     }
     if (password !== confirm_password) {
       return dispatch(updateToastMessage({ message: "New password and confirm password do not match", type: "error" }))
     }
-
     const payload = {
       email: profile_details?.email,
       current_password,
@@ -43,7 +51,6 @@ const Settings = () => {
     if (!file) {
       return
     }
-
     const formdata = new FormData()
     formdata.append("image", file)
     dispatch(editProfilePicture(formdata))
@@ -63,13 +70,13 @@ const Settings = () => {
         <Col lg={4} className="p-2 d-flex flex-column">
           <Card className="mb-3 text-center flex-fill">
             <Card.Body>
-              <img
-                src={profile_details?.profile_picture || Images.default_profile_pic}
-                alt="profile"
-                className="rounded-circle mb-3"
-                width="130"
-                height="130"
-              />
+              <Image
+                    src={profile_details?.profile_picture || Images.default_profile_pic}
+                    roundedCircle
+                    width={130}
+                    height={130}
+                    className="rounded-circle mb-3 object-fit-cover"
+                  />
               <Card.Title>{`${profile_details?.user_name} ${profile_details?.last_name || ""}`}</Card.Title>
               <Card.Text className="text-muted mb-1">{profile_details?.email}</Card.Text>
               <Card.Text className="text-muted mb-2">{profile_details?.phone_number}</Card.Text>
@@ -113,7 +120,7 @@ const Settings = () => {
                     onChange={(e) => dispatch(updatePasswordInputs({ confirm_password: e.target.value }))}
                   />
                 </Form.Group>
-                <ButtonComponent type="button" className="btn-success w-100" buttonName="Change Password" clickFunction={changeUserPassword} />
+                <ButtonLoading  as="button" className="btn-success w-100" buttonName="Change Password" loading={passwordInputs?.is_loading} clickFunction={changeUserPassword}  />
               </Form>
             </Card.Body>
           </Card>
@@ -125,30 +132,32 @@ const Settings = () => {
             <Card.Body className="p-4">
               <div className="text-center mb-4">
                 <div className="position-relative d-inline-block">
-                  <Image
-                    src={profile_details?.profile_picture || Images.default_profile_pic}
-                    roundedCircle
-                    width={120}
-                    height={120}
-                    className="border border-3 border-success object-fit-cover"
-                  />
+                  {loading ? <Spinner /> : <>
+                    <Image
+                      src={profile_details?.profile_picture || Images.default_profile_pic}
+                      roundedCircle
+                      width={120}
+                      height={120}
+                      className="border border-3 border-success object-fit-cover"
+                    />
 
-                  <Button
-                    variant="light"
-                    size="sm"
-                    className="position-absolute bottom-0 end-0 rounded-circle shadow-sm d-flex justify-content-center align-items-center p-0"
-                    style={{ width: "36px", height: "36px" }}
-                    onClick={handleEditClick}
-                  >
-                    <RiEdit2Fill size={20} className="text-primary" />
-                  </Button>
-                  <input
-                    type="file"
-                    ref={fileInputRef}
-                    accept="image/*"
-                    className="d-none"
-                    onChange={handleImageChange}
-                  />
+
+                    <Button
+                      variant="light"
+                      size="sm"
+                      className="position-absolute bottom-0 end-0 rounded-circle shadow-sm d-flex justify-content-center align-items-center p-0"
+                      style={{ width: "36px", height: "36px" }}
+                      onClick={handleEditClick}
+                    >
+                      <RiEdit2Fill size={20} className="text-primary" />
+                    </Button>
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      accept="image/*"
+                      className="d-none"
+                      onChange={handleImageChange}
+                    /></>}
                 </div>
 
                 <h3 className="mt-3 fw-bold">{`${profile_details?.user_name} ${profile_details?.last_name || ""}`}</h3>

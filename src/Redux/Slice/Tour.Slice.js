@@ -20,7 +20,8 @@ let initialState = {
     },
     cart_details:[],
     upcoming_bookings:[],
-    booking_history:[]
+    booking_history:[],
+    selected_tour:{}
 
 
 }
@@ -77,7 +78,55 @@ const tourSlice = createSlice({
         },
         update_booking_history:(state,action)=>{
             state.booking_history = action.payload
+        },
+        update_selected_tour: (state, action) => {
+            const { field, index, key, value, actionType } = action.payload;
+
+            if (field && Array.isArray(state.selected_tour[field])) {
+                switch (actionType) {
+                    case "update":
+                        if (typeof index === "number") {
+                            if (typeof state.selected_tour[field][index] === "object") {
+                                state.selected_tour[field][index] = {
+                                    ...state.selected_tour[field][index],
+                                    [key]: value
+                                }
+                            } else {
+                                state.selected_tour[field][index] = value
+                            }
+                        }
+                        break;
+
+                    case "remove":
+                        if (typeof index === "number") {
+                            state.selected_tour[field] = state.selected_tour[field].filter((_, i) => i !== index)
+                        }
+                        break;
+
+
+                    case "add":
+                        if (field === "places_covered") {
+                            state.selected_tour[field].push({ name: "", description: "" });
+                        } else {
+                            state.selected_tour[field].push("");
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+            } else {
+                Object.entries(action.payload).forEach(([k, v]) => {
+                    if (k === "days" || k === "budget") {
+                        state.selected_tour[k] = Number(v);
+                    } else {
+                        state.selected_tour[k] = v;
+                    }
+                });
+            }
         }
+
+
 
 
 
@@ -97,7 +146,8 @@ export const {
     clear_enquiry_details,
     update_cart_details,
     update_upcoming_bookings,
-    update_booking_history
+    update_booking_history,
+    update_selected_tour
 
 } = actions
 export default reducer

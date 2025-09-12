@@ -56,57 +56,50 @@ const JsonData = () => {
         route: "home"
       },
       {
-        icon: Icons.dashboardIcon,
+        icon: Icons.bookingIcon,
         name: "Bookings",
         route: "bookings"
       }, {
-        icon: Icons.dashboardIcon,
+        icon: Icons.tourIcon,
         name: "Tour Packages",
         route: "packages"
       }, {
-        icon: Icons.dashboardIcon,
+        icon: Icons.userIcon,
         name: "User Details",
         route: "users"
       }, {
-        icon: Icons.dashboardIcon,
+        icon: Icons.enquiryIcon,
+        name: "Enquiry",
+        route: "enquiry"
+      },{
+        icon: Icons.settingsIcon,
         name: "Settings",
         route: "settings"
       }
     ],
-    tableHeadings: [
-      "User Name", "Tour Title", "Booking Date",
-      "Country", "Price", "Payment",
-    ],
-
-    tableKeys: [
-      "user_name", "title", "booking_date",
-      "country", "budget", "payment_status",
-    ],
-    bookingTableheadings:[
-                        "Tour Title", "Booking Date", "Guests", "Price", "Payment", "Booking"
-                      ],
-    bookingTableKeys:[
-                        "title", "booking_date", "persons", "budget", "payment_status", "booking_status"
-                      ],
+    tableHeadings: ["User Name", "Tour Title", "Booking Date","Country", "Price", "Payment",],
+    tableKeys: ["user_name", "title", "booking_date","country", "budget", "payment_status",],
+    bookingTableheadings:["Tour Title", "Booking Date", "Guests", "Price", "Payment", "Booking"],
+    bookingTableKeys:["title", "booking_date", "persons", "budget", "payment_status", "booking_status"],
     bookingCards: [{
       title: "Total Bookings",
-      value: booking_details?.stats?.totalBookings,
+      value: booking_details?.data?.stats?.totalBookings,
     },
     {
       title: "New Bookings",
-      value: booking_details?.stats?.pendingCount,
+      value: booking_details?.data?.stats?.pendingCount,
     },
     {
       title: "Completed Bookings",
-      value: booking_details?.stats?.completedCount,
+      value: booking_details?.data?.stats?.completedCount,
     },
     {
       title: "Upcomming Bookings",
-      value: booking_details?.stats?.pendingCount,
+      value: booking_details?.data?.stats?.pendingCount,
     },
     {
       title: "Cancelled Bookings",
-      value: booking_details?.stats?.cancelledCount,
+      value: booking_details?.data?.stats?.cancelledCount,
     }]
 
 

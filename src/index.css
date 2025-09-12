@@ -406,6 +406,28 @@ img.rounded-circle {
   }
 }
 
+/* Loading Button styles */
+
+.loading-wave {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.loading-wave span {
+  display: inline-block;
+  animation: wave 1.2s infinite ease-in-out;
+}
+
+@keyframes wave {
+  0%, 60%, 100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-6px);
+  }
+}
+
+
 
 
 

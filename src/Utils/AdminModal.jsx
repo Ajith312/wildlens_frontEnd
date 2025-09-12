@@ -1,16 +1,18 @@
 import ButtonComponent from 'Components/Button/Button'
 import BookingHistoryCard from 'Components/Card/BookingHistoryCard'
-import { useCommonState } from 'Components/CustomHooks'
+import { useCommonState, useCustomNavigate } from 'Components/CustomHooks'
 import ModalComponent from 'Components/Modal/Modal'
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { bookTourByAdmin, handleCancelBooking, handleConfirmBooking } from 'Redux/Action/Admin.Action'
+import { bookTourByAdmin, deleteTourPackages, handleCancelBooking, handleConfirmBooking } from 'Redux/Action/Admin.Action'
 import JsonData from './JsonData'
 import { InputFunctions } from 'Functions/InputFunction'
 import { updateModalShow, updateToastMessage } from 'Redux/Slice/Common.Slice'
+import ButtonLoading from 'Components/Button/Buttonloading'
 const AdminModal = () => {
     const dispatch = useDispatch()
-    const {commonState,adminState}=useCommonState()
+    const navigate = useCustomNavigate()
+    const {commonState,adminState,tourState}=useCommonState()
     const {jsxJson } = JsonData()
 
 
@@ -37,10 +39,10 @@ const AdminModal = () => {
                         break
                 }
 
-            case "":
+            case "Tours":
                 switch (commonState?.modal?.type) {
-                    case "":
-                        return <h5> </h5>;
+                    case "delete_tour":
+                        return <h5>Delete Tour</h5>;
                     default:
                         break
                 }
@@ -70,11 +72,11 @@ const AdminModal = () => {
                     default:
                         break;
                 }
-                 case "Profile":
+                 case "Tours":
                 switch (commonState?.modal?.type) {
-                    case "edit_profile":
+                    case "delete_tour":
                         return <div className="w-100">
-                            hello
+                           Are you want to delete this Tour <span className='fw-bold text-primary'>{tourState?.selected_tour?.title}</span>
                         </div>
 
                     default:
@@ -102,11 +104,12 @@ const AdminModal = () => {
 
                     case "add_booking":
                         return <div className="d-flex gap-4 w-100 p-2">
-                            <ButtonComponent
-                                type="button"
+                            <ButtonLoading
                                 className="btn-success w-50"
                                 buttonName="Booking Now"
-                               clickFunction={()=>handleSubmit(adminState?.new_booking_inputs)}
+                                clickFunction={() => handleSubmit(adminState?.new_booking_inputs)}
+                                loading={adminState?.new_booking_inputs?.is_loading}
+                                loadingText="Booking..."
                             />
                             <ButtonComponent
                                 type="button"
@@ -121,7 +124,26 @@ const AdminModal = () => {
                         break;
                 }
                 break;
+            case "Tours" : 
+                switch (commonState?.modal?.type) {
+                    case "delete_tour":
+                        return <div className="d-flex gap-4 w-100 p-2">
+                            <ButtonComponent
+                                type="button"
+                                className="btn-success w-50"
+                                buttonName="Delete Tour"
+                                clickFunction={() => dispatch(deleteTourPackages(tourState?.selected_tour?._id,navigate))}
+                            />
+                            <ButtonComponent
+                                type="button"
+                                className="btn-outline-danger w-50"
+                                buttonName="Cancel"
+                                clickFunction={() => dispatch(updateModalShow({}))}
+                            />
+                        </div>
 
+                }
+                break;
             default:
                 break;
         }

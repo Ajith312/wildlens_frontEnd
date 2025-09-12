@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit"
-import Cookies from "js-cookie"
 
 let initialState = {
     isOnline:false,
@@ -36,7 +35,8 @@ let initialState = {
    passwordInputs:{
         current_password:"",
         password:"",
-        confirm_password:""
+        confirm_password:"",
+        is_loading:false
     }
     
 }
@@ -136,16 +136,15 @@ const commonSlice = createSlice({
 
     },
 
-    extraReducers:(builder)=>{
-        builder 
-        .addMatcher((action)=>["commonSlice/handleLogin"].includes(action.type),
-        (state,action)=>{
-            
-        }
-    
-    
-    )
-    }
+    // extraReducers:(builder)=>{
+    //     builder
+    //     .addCase("",(state,action)=>{
+
+    //     })
+    //     .addMatcher("",(state,action)=>{
+
+    //     })
+    // }
 
 })
 

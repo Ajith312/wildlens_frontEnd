@@ -3,107 +3,133 @@ import { Row, Col, Card, Badge, Form, Button, Image as BootstrapImage } from 're
 import { MdOutlineLocationOn, MdDelete, MdAddPhotoAlternate, MdEdit } from 'react-icons/md';
 import { RiMoneyRupeeCircleLine } from 'react-icons/ri';
 import { FaSave, FaTimes } from 'react-icons/fa';
+import { IoMdArrowRoundBack } from "react-icons/io";
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'Components/CustomHooks';
-import { getAllTours } from 'Redux/Action/Tour.Action';
+import { useCommonState, useCustomNavigate, useDispatch } from 'Components/CustomHooks';
+import { update_selected_tour } from 'Redux/Slice/Tour.Slice';
+import ButtonComponent from 'Components/Button/Button';
+import { updateModalShow } from 'Redux/Slice/Common.Slice';
+import { deleteTourImages, editTourDetails, getSelectedTourDetails, uploadTourImages } from 'Redux/Action/Admin.Action';
+import Spinner from 'Components/Spinner/CustomSpinner';
 
 const AdminTourDetails = () => {
 
 const dispatch = useDispatch()
+const navigate = useCustomNavigate()
 const [isEditing,setIsEditing] = useState(false)
- const { id } = useParams()
- const {tour_package_details} = useSelector((state)=>state.tourState)
- const [tour,setTour] = useState(null)
- const [selectedImage, setSelectedImage] = useState(null)
+const { id } = useParams()
+const [selectedImage, setSelectedImage] = useState(null)
+const {tour_package_details,selected_tour } = useCommonState()?.tourState
+const { loading} = useCommonState()?.adminState
 
-
- useEffect(() => {
-  const tourDetail = tour_package_details?.find(t => t._id === id);
-  if (!tourDetail) {
-    dispatch(getAllTours())
-  } else {
-    setTour(tourDetail)
-  }
-}, [tour_package_details, id, dispatch]);
 
 useEffect(() => {
-  if (tour && !selectedImage) {
-    setSelectedImage(tour?.imageGallery?.[0] || null)
-  }
-}, [tour, selectedImage])
+    dispatch(getSelectedTourDetails(id))
+  }, [id, tour_package_details])
 
+useEffect(() => {
+  if (selected_tour && !selectedImage) {
+    setSelectedImage(selected_tour?.image_gallery?.[0]?.url || null)
+  }
+}, [selected_tour, selectedImage])
+
+
+  const handleImageUpload = (files) => {
+    if (!files) return
+    const formData = new FormData()
+    Array.from(files).forEach((file) => {
+      formData.append("images", file)
+    })
+    dispatch(uploadTourImages(id, formData))
+  }
 
 
 
   return (
     <div className="container">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1>Tour Management</h1>
+      <div className="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
+          <div className='d-flex align-items-center justify-content-center'>
+              <span className='align-items-center' onClick={()=>navigate('/admin/packages')}><IoMdArrowRoundBack size={32} /></span>
+               <h2 className='mb-0 '>Tour Management</h2>
+          </div>
+       
         <div className="d-flex gap-2">
           {isEditing ? (
             <>
-              <Button variant="success" className="d-flex align-items-center gap-2" onClick={()=>setIsEditing(false)}>
-                <FaSave /> Save
-              </Button>
-              <Button variant="outline-secondary" className="d-flex align-items-center gap-2" onClick={()=>setIsEditing(false)}>
-                <FaTimes /> Cancel
-              </Button>
+              <ButtonComponent className="btn-success" buttonName={<div className='d-flex align-items-center gap-2'><FaSave /> Save</div>} 
+              clickFunction={() => {
+                setIsEditing(false)
+                dispatch(editTourDetails(id,selected_tour))
+              }} />
+              <ButtonComponent className="btn-outline-secondary" buttonName={<div className='d-flex align-items-center gap-2'><FaTimes /> Cancel</div>} clickFunction={() => setIsEditing(false)} />
             </>
           ) : (
-            <Button variant="primary" className="d-flex align-items-center gap-2" onClick={()=>setIsEditing(true)}>
-              <MdEdit /> Edit Tour
-            </Button>
+            <ButtonComponent className="btn-primary" buttonName={<div className='d-flex align-items-center gap-2'><MdEdit /> Edit Tour</div>} clickFunction={() => setIsEditing(true)} />
           )}
-          <Button variant="danger" className="d-flex align-items-center gap-2" onClick={()=>setIsEditing(false)}>
-            <MdDelete /> Delete Tour
-          </Button>
+          <ButtonComponent className="btn-danger" buttonName={<div className='d-flex align-items-center gap-2'><MdDelete /> Delete Tour</div>} 
+          clickFunction={() => {
+            setIsEditing(false)
+            dispatch(updateModalShow({show:true,close_btn:true,size:"md",modal_from:"Tours",modal_type:"delete_tour"}))
+          }} />
         </div>
       </div>
 
       <Row>
         <Col xs={12} lg={6} className="p-2">
-          <Card className="h-100">
-            <Card.Img
-              variant="top"
-              src={selectedImage}
-              className="img-fluid"
-              style={{ height: 'auto', maxHeight: '400px', objectFit: 'cover' }}
-            />
-            <Card.Body>
-              <div className="d-flex flex-wrap gap-2 justify-content-start">
-                {tour?.imageGallery?.map((img, index) => (
-                  <div key={index} className="position-relative" onClick={()=>setSelectedImage(img)}>
-                    <BootstrapImage
-                      src={img}
-                      alt={`Tour ${index + 1}`}
-                      thumbnail
-                      className={`${img === selectedImage ? 'border border-primary border-2' : ''}`}
-                      style={{ width: '70px', height: '70px', objectFit: 'cover', cursor: 'pointer' }}
-                    />
-                    {isEditing && (
-                      <Button
-                        variant="danger"
-                        size="sm"
-                        className="position-absolute top-50 end-0 translate-middle"
-                        style={{ zIndex: 1 }}
-                      >
-                        <MdDelete />
-                      </Button>
-                    )}
-                  </div>
-                ))}
-                {isEditing && (
-                  <Button
-                    variant="outline-primary"
-                    style={{ width: '70px', height: '70px' }}
-                    className="d-flex align-items-center justify-content-center"
-                  >
-                    <MdAddPhotoAlternate size={24} />
-                  </Button>
-                )}
-              </div>
-            </Card.Body>
+          <Card className="h-100" style={{maxHeight:"550px"}}>
+            {loading ? (<div className='h-100 w-100 d-flex justify-content-center align=-items-center'><Spinner /></div>) : (<>
+              <Card.Img
+                variant="top"
+                src={selectedImage}
+                className="img-fluid object-fit-cover h-auto"
+                style={{ maxHeight: '400px' }}
+              />
+              <Card.Body>
+                <div className="d-flex flex-wrap gap-2 justify-content-start">
+                  {selected_tour?.image_gallery?.map((img, index) => (
+                    <div key={img?._id} className="position-relative" onClick={() => setSelectedImage(img?.url)}>
+                      <BootstrapImage
+                        src={img?.url}
+                        alt={`Tour ${index + 1}`}
+                        thumbnail
+                        className={`${img === selectedImage ? 'border border-primary border-2' : ''}`}
+                        style={{ width: '70px', height: '70px', objectFit: 'cover', cursor: 'pointer' }}
+                      />
+                      {isEditing && (
+                        <Button
+                          variant="danger"
+                          size="sm"
+                          className="position-absolute top-50 end-0 translate-middle"
+                          style={{ zIndex: 1 }}
+                          onClick={() => dispatch(deleteTourImages(id, img?.public_id))}
+                        >
+                          <MdDelete />
+                        </Button>
+
+                      )}
+                    </div>
+                  ))}
+                  {(isEditing || selected_tour?.image_gallery?.length === 0) && (
+                    <div style={{ width: "70px", height: "70px", position: "relative" }}>
+                      <input
+                        type="file"
+                        id="imageUpload"
+                        multiple
+                        accept="image/*"
+                        className='d-none'
+                        onChange={(e) => handleImageUpload([...e.target.files])}
+                      />
+                      <ButtonComponent
+                        className="btn-outline-primary h-100 w-100"
+                        buttonName={<MdAddPhotoAlternate size={24} />}
+                        clickFunction={() => document.getElementById("imageUpload").click()}
+                      />
+                    </div>
+                  )}
+
+                </div>
+              </Card.Body>
+            </>)}
           </Card>
         </Col>
 
@@ -116,11 +142,12 @@ useEffect(() => {
                   <Form.Label>Title</Form.Label>
                   <Form.Control
                     type="text"
-                    defaultValue={tour?.title}
+                    value={selected_tour?.title}
+                    onChange={(e)=> dispatch(update_selected_tour({title:e.target.value}))}
                   />
                 </Form.Group>
               ) : (
-                <h1 className="mb-3">{tour?.title}</h1>
+                <h1 className="mb-3">{selected_tour?.title}</h1>
               )}
 
               <div className="d-flex align-items-center flex-wrap mb-3 gap-2">
@@ -130,25 +157,27 @@ useEffect(() => {
                       <Form.Label>Days</Form.Label>
                       <Form.Control
                         type="number"
-                        defaultValue={tour?.days}
+                        value={selected_tour?.days}
+                        onChange={(e) => dispatch(update_selected_tour({ days: e.target.value }))}
                       />
                     </Form.Group>
                     <Form.Group controlId="country">
                       <Form.Label>Country</Form.Label>
                       <Form.Control
                         type="text"
-                        defaultValue={tour?.country}
+                        value={selected_tour?.country}
+                        onChange={(e) => dispatch(update_selected_tour({ country: e.target.value }))}
                       />
                     </Form.Group>
                   </>
                 ) : (
                   <>
                     <Badge bg="success">
-                      {tour?.days} Days / {tour?.days - 1} Nights
+                      {selected_tour?.days} Days / {selected_tour?.days - 1} Nights
                     </Badge>
                     <Badge bg="info">
                       <MdOutlineLocationOn className="me-1" />
-                      {tour?.country}
+                      {selected_tour?.country}
                     </Badge>
                   </>
                 )}
@@ -164,7 +193,8 @@ useEffect(() => {
                       </span>
                       <Form.Control
                         type="number"
-                        defaultValue={tour?.budget}
+                        value={selected_tour?.budget}
+                        onChange={(e) => dispatch(update_selected_tour({ budget: e.target.value }))}
                       />
                     </div>
                   </Form.Group>
@@ -172,7 +202,7 @@ useEffect(() => {
                   <>
                     <h3 className="text-primary">
                       <RiMoneyRupeeCircleLine className="me-2" />
-                      {tour?.budget.toLocaleString('en-IN')} INR
+                      {selected_tour?.budget?.toLocaleString('en-IN')} INR
                     </h3>
                     <p className="text-muted">Per person</p>
                   </>
@@ -187,23 +217,32 @@ useEffect(() => {
                     <Form.Control
                       as="textarea"
                       rows={3}
-                      defaultValue={tour?.description}
+                      value={selected_tour?.description}
+                      onChange={(e) => dispatch(update_selected_tour({ description: e.target.value }))}
                     />
                   </Form.Group>
                 ) : (
-                  <p><strong>Description:</strong> {tour?.description}</p>
+                  <p><strong>Description:</strong> {selected_tour?.description}</p>
                 )}
 
                 <h6 className="mt-4 mb-2">Places Covered</h6>
                 {isEditing ? (
                   <>
-                    {tour?.places_covered?.map((place, index) => (
+                    {selected_tour?.places_covered?.map((place, index) => (
                       <div key={index} className="mb-3 p-2 border rounded">
                         <Form.Group controlId={`placeName-${index}`} className="mb-2">
                           <Form.Label>Place Name</Form.Label>
                           <Form.Control
                             type="text"
                             defaultValue={place?.name}
+                            value={selected_tour?.places_covered[index]?.name}
+                            onChange={(e) => dispatch(update_selected_tour({
+                              field: "places_covered",
+                              index,
+                              key: "name",
+                              value: e.target.value,
+                              actionType: "update"
+                            }))}
                           />
                         </Form.Group>
                         <Form.Group controlId={`placeDesc-${index}`}>
@@ -211,29 +250,35 @@ useEffect(() => {
                           <Form.Control
                             as="textarea"
                             rows={2}
-                            defaultValue={place?.description}
+                            value={selected_tour?.places_covered[index]?.description}
+                            onChange={(e) => dispatch(update_selected_tour({
+                              field: "places_covered",
+                              index,
+                              key: "description",
+                              value: e.target.value,
+                              actionType: "update"
+                            }))}
                           />
                         </Form.Group>
-                        <Button
-                          variant="outline-danger"
-                          size="sm"
-                          className="mt-2"
-                        >
-                          Remove
-                        </Button>
+                        <ButtonComponent className="btn-outline-danger mt-2" size="sm" buttonName="Remove"
+                          clickFunction={() => dispatch(update_selected_tour({
+                            field: "places_covered",
+                            index,
+                            actionType: "remove"
+                          }))}
+                        />
                       </div>
                     ))}
-                    <Button
-                      variant="outline-primary"
-                      size="sm"
-                      className="mt-2"
-                    >
-                      Add Place
-                    </Button>
+                     <ButtonComponent className="btn-outline-primary mt-2" size="sm" buttonName="Add Place"
+                          clickFunction={() => dispatch(update_selected_tour({
+                            field: "places_covered",
+                            actionType: "add"
+                          }))}
+                        />
                   </>
                 ) : (
                   <ul className="mb-1">
-                    {tour?.places_covered?.map((place, index) => (
+                    {selected_tour?.places_covered?.map((place, index) => (
                       <li key={index}>
                         <strong>{place?.name}</strong> – {place?.description}
                       </li>
@@ -254,31 +299,38 @@ useEffect(() => {
               <h2 className="h4 mb-3 text-primary">Inclusions</h2>
               {isEditing ? (
                 <>
-                  {tour?.inclusions?.map((item, index) => (
+                  {selected_tour?.inclusions?.map((_, index) => (
                     <div key={index} className="mb-2 d-flex align-items-center">
                       <Form.Control
                         type="text"
-                        defaultValue={item}
                         className="me-2"
+                        value={selected_tour?.inclusions?.[index]}
+                            onChange={(e) => dispatch(update_selected_tour({
+                              field: "inclusions",
+                              index,
+                              value: e.target.value,
+                              actionType: "update"
+                            }))}
                       />
-                      <Button
-                        variant="outline-danger"
-                        size="sm"
-                      >
-                        <MdDelete />
-                      </Button>
+                      <ButtonComponent className="btn-outline-danger" size="sm" buttonName={<MdDelete />} 
+                        clickFunction={() => dispatch(update_selected_tour({
+                          field: "inclusions",
+                          index,
+                          actionType: "remove"
+                        }))}
+                      /> 
                     </div>
                   ))}
-                  <Button
-                    variant="outline-primary"
-                    size="sm"
-                  >
-                    Add Inclusion
-                  </Button>
+                  <ButtonComponent className="btn-outline-primary mt-2" size="sm" buttonName="Add Inclusion"
+                    clickFunction={() => dispatch(update_selected_tour({
+                      field: "inclusions",
+                      actionType: "add"
+                    }))}
+                  />
                 </>
               ) : (
                 <ul className="list-unstyled mb-0">
-                  {tour?.inclusions?.map((item, index) => (
+                  {selected_tour?.inclusions?.map((item, index) => (
                     <li key={index} className="mb-2 d-flex align-items-start">
                       <span className="me-2 text-success">✓</span>
                       <span>{item}</span>
@@ -295,31 +347,39 @@ useEffect(() => {
               <h2 className="h4 mb-3 text-primary">Exclusions</h2>
               {isEditing ? (
                 <>
-                  {tour?.exclusions?.map((item, index) => (
+                  {selected_tour?.exclusions?.map((item, index) => (
                     <div key={index} className="mb-2 d-flex align-items-center">
                       <Form.Control
                         type="text"
                         defaultValue={item}
                         className="me-2"
+                        value={selected_tour?.exclusions?.[index]}
+                            onChange={(e) => dispatch(update_selected_tour({
+                              field: "exclusions",
+                              index,
+                              value: e.target.value,
+                              actionType: "update"
+                            }))}
                       />
-                      <Button
-                        variant="outline-danger"
-                        size="sm"
-                      >
-                        <MdDelete />
-                      </Button>
+                      <ButtonComponent className="btn-outline-danger" size="sm" buttonName={<MdDelete />} 
+                        clickFunction={() => dispatch(update_selected_tour({
+                          field: "exclusions",
+                          index,
+                          actionType: "remove"
+                        }))}
+                      /> 
                     </div>
                   ))}
-                  <Button
-                    variant="outline-primary"
-                    size="sm"
-                  >
-                    Add Exclusion
-                  </Button>
+                   <ButtonComponent className="btn-outline-primary mt-2" size="sm" buttonName="Add Exclusion"
+                    clickFunction={() => dispatch(update_selected_tour({
+                      field: "exclusions",
+                      actionType: "add"
+                    }))}
+                  />
                 </>
               ) : (
                 <ul className="list-unstyled mb-0">
-                  {tour?.exclusions?.map((item, index) => (
+                  {selected_tour?.exclusions?.map((item, index) => (
                     <li key={index} className="mb-2 d-flex align-items-start">
                       <span className="me-2 text-danger">✗</span>
                       <span>{item}</span>

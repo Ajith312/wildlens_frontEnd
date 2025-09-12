@@ -1,26 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, InputGroup, Dropdown, Badge } from 'react-bootstrap';
 import { FiSearch, FiBell, FiUser, FiMenu, FiSettings, FiLogOut } from 'react-icons/fi';
 import ButtonComponent from 'Components/Button/Button';
-import Icons from 'Utils/Icons';
-import { useCommonState } from 'Components/CustomHooks';
+import {useCommonState, useCustomNavigate, useDispatch } from 'Components/CustomHooks';
 import HeaderCard from 'Components/Card/HeaderCard';
+import { handleLogout } from 'Redux/Action/Common.Action';
+import Images from "Utils/Image"
+import { useLocation } from 'react-router-dom';
+import JsonData from 'Utils/JsonData';
 
 const Header = ({ offcanvasOn, offcanvasOnButton }) => {
   const { commonState } = useCommonState();
-  const user = {
-    name: "Admin User",
-    role: "Administrator",
-    avatar: "https://randomuser.me/api/portraits/men/32.jpg"
-  };
+  const navigate = useCustomNavigate()
+  const dispatch = useDispatch()
+  const location = useLocation()
+  const{sidebarMenus} = JsonData()?.jsonOnly
 
-  const notifications = [
-    { id: 1, text: 'New booking received', time: '2 min ago', read: false },
-    { id: 2, text: 'Payment processed', time: '1 hour ago', read: true },
-    { id: 3, text: 'New message from customer', time: '3 hours ago', read: false }
-  ];
-
+  const[menuName,setMenuName]=useState()
+  const notifications = []
   const unreadCount = notifications.filter(n => !n.read).length;
+
+  useEffect(() => {
+    const headerName = () => {
+      const path = location.pathname
+      const name = sidebarMenus?.find(menu => path.includes(menu.route))
+      setMenuName(name?.name)
+    }
+    headerName()
+  }, [location.pathname])
+
+
+
+
+
 
   return (
     <HeaderCard
@@ -38,7 +50,7 @@ const Header = ({ offcanvasOn, offcanvasOnButton }) => {
                 buttonName={<FiMenu size={20} />}
               />
             )}
-            <h5 className="mb-0 fw-semibold">{commonState?.currentMenuName || 'Dashboard'}</h5>
+            <h5 className="mb-0 fw-bold  text-success">{menuName}</h5>
           </div>
 
 
@@ -114,16 +126,16 @@ const Header = ({ offcanvasOn, offcanvasOnButton }) => {
             className="d-flex align-items-center p-0 bg-transparent border-0"
           >
             <div className="d-flex align-items-center">
-              <div className="me-2 d-none d-sm-block text-end">
-                <div className="small fw-semibold">{user.name}</div>
-                <div className="small text-muted">{user.role}</div>
+              <div className="me-2 d-none d-sm-block text-center">
+                <div className="small fw-semibold">{commonState?.profile_details?.user_name}</div>
+                <div className="small text-muted">Administrator</div>
               </div>
               <div className="position-relative">
                 <img
-                  src={user.avatar}
+                  src={commonState?.profile_details?.profile_picture || Images?.default_profile_pic}
                   alt="Profile"
-                  width="36"
-                  height="36"
+                  width="40"
+                  height="40"
                   className="rounded-circle border"
                   style={{ objectFit: 'cover' }}
                 />
@@ -132,16 +144,17 @@ const Header = ({ offcanvasOn, offcanvasOnButton }) => {
           </Dropdown.Toggle>
 
           <Dropdown.Menu className="shadow mt-2">
-            <Dropdown.Item href="#/profile" className="d-flex align-items-center">
+            <Dropdown.Item className="d-flex align-items-center" onClick={()=>navigate('settings')}>
               <FiUser className="me-2" />
               My Profile
             </Dropdown.Item>
-            <Dropdown.Item href="#/settings" className="d-flex align-items-center">
+            <Dropdown.Divider />
+            <Dropdown.Item className="d-flex align-items-center" onClick={()=>navigate('settings')}>
               <FiSettings className="me-2" />
               Settings
             </Dropdown.Item>
             <Dropdown.Divider />
-            <Dropdown.Item href="#/logout" className="d-flex align-items-center text-danger">
+            <Dropdown.Item  className="d-flex align-items-center text-danger" onClick={()=>dispatch(handleLogout(navigate))}>
               <FiLogOut className="me-2" />
               Logout
             </Dropdown.Item>

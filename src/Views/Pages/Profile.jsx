@@ -5,6 +5,7 @@ import { Container, Row, Col, Card, Image, Nav, Badge } from 'react-bootstrap';
 import { Outlet, useLocation } from 'react-router-dom';
 import { getProfileDetails } from 'Redux/Action/Common.Action';
 import Icons from 'Utils/Icons';
+import Images from "Utils/Image"
 
 const Profile = () => {
   const location = useLocation()
@@ -32,13 +33,13 @@ const Profile = () => {
             <Card.Body className='p-3'>
               <div className="text-center mb-4">
                 <Image
-                  src={profile_details?.profile_picture}
+                  src={profile_details?.profile_picture || Images?.default_profile_pic}
                   roundedCircle
                   width={120}
                   height={120}
                   className="border border-3 border-primary object-fit-cover mb-2"
                 />
-                <h5 className="fw-bold mb-1">{`${profile_details?.user_name} ${profile_details?.last_name}`}</h5>
+                <h5 className="fw-bold mb-1">{`${profile_details?.user_name || ''} ${profile_details?.last_name|| ''}`}</h5>
                 <p className="text-muted">{profile_details?.email}</p>
               </div>
               <div className="d-flex flex-column gap-2">

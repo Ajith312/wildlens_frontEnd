@@ -1,5 +1,5 @@
 import { saveAccountToCookie } from "Functions/AuthFunction";
-import { clearPasswordInputs, clearUserDetails, update_login_data, updateCanvasShow, updateLoading, updateLoadingTwo, updateLoginResponse, updateProfileDetails, updateProfileEditing, updateRefreshToken, updateRegisterResponse, updateToastMessage } from "Redux/Slice/Common.Slice";
+import { clearPasswordInputs, clearUserDetails, update_login_data, updateCanvasShow, updateLoading, updateLoadingTwo, updateLoginResponse, updatePasswordInputs, updateProfileDetails, updateProfileEditing, updateRefreshToken, updateRegisterResponse, updateToastMessage } from "Redux/Slice/Common.Slice";
 import axiosInstance from "Services/axiosInstance";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -164,10 +164,11 @@ export const handlerefreshToken =()=> async(dispatch)=>{
           dispatch(updateRefreshToken(token))
           saveAccountToCookie(role, token)
         } else {
-          console.log('refresh token failed')
+         dispatch(handleLogout())
         }
     } catch (error) {
        console.log(error)
+       dispatch(handleLogout());
       dispatch(updateToastMessage({message: error?.response?.data?.message || "Something went wrong", type: "error"}))
     }
 }
@@ -209,16 +210,20 @@ export const editUserProfile = ()=> async (dispatch)=>{
 
 export const editProfilePicture = (formdata)=> async (dispatch)=>{
   try {
+    dispatch(updateLoading(true))
     const {data} = await axiosInstance.post('user/upload-profileimage',formdata)
     if(data?.error_code === 200){
       dispatch(getProfileDetails())
+      dispatch(updateLoading(false))
       dispatch(updateToastMessage({message:data?.message || "profile picture upload succesfully",type: "success"}))
     }else{
+      dispatch(updateLoading(false))
       dispatch(updateToastMessage({message:data?.message || "Failed to change profile picture",type: "error"}))
     }
     
   } catch (error) {
     console.log("handleLogout", error)
+    dispatch(updateLoading(false))
     dispatch(updateToastMessage({ message: error?.response?.data?.message || "Something went wrong", type: "error" }))
   }
 }
@@ -241,16 +246,20 @@ export const editProfileInfo = (payload)=> async(dispatch)=>{
 
 export const handleUpdatePassword = (payload)=>async(dispatch)=>{
     try {
+        dispatch(updatePasswordInputs({ is_loading: true }))
         const {data} = await axiosInstance.post("user/change-password",payload)
         if(data?.error_code === 200){
             dispatch(updateToastMessage({ message: data?.message || "Something went wrong", type: "success" }))
+            dispatch(updatePasswordInputs({ is_loading: false }))
             dispatch(clearPasswordInputs())
         }else{
             dispatch(updateToastMessage({ message: data?.message || "Something went wrong", type: "error" }))
+            dispatch(updatePasswordInputs({ is_loading: false }))
         }
         
     } catch (error) {
          console.log('handleUpdatePassword', error)
+         dispatch(updatePasswordInputs({ is_loading: false }))
         dispatch(updateToastMessage({message: error?.response?.data?.message || "Something went wrong", type: "error"}))
     }
 }

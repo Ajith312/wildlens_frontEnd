@@ -32,6 +32,7 @@ import Settings from 'Views/Admin/Settings'
 import AdminTourDetails from 'Views/Admin/AdminTourDetails'
 import UserDetails from 'Views/Admin/UserDetails'
 import AddTourForm from 'Views/Admin/AddTour'
+import Enquiry from 'Views/Admin/Enquiry'
 
 function App() {
 
@@ -72,6 +73,7 @@ function App() {
             <Route path='users' element={<Users />} />
             <Route path='users/:id' element={<UserDetails />} />
             <Route path='settings' element={<Settings />} />
+            <Route path='enquiry' element={<Enquiry />} />
             <Route path="packages/:id" element={<AdminTourDetails />} />
 
             </Route>

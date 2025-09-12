@@ -1,5 +1,5 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import commonReducer from 'Redux/Slice/Common.Slice';
+import commonReducer from "Redux/Slice/Common.Slice"
 import tourReducer from 'Redux/Slice/Tour.Slice'
 import adminReducer from "Redux/Slice/Admin.Slice"
 

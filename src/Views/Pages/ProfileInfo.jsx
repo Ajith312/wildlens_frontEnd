@@ -5,6 +5,7 @@ import { Card, Image, Button, Form, Row, Col } from 'react-bootstrap'
 import { editProfileInfo, editProfilePicture, getProfileDetails } from 'Redux/Action/Common.Action'
 import { RiEdit2Fill } from "react-icons/ri";
 import { updateProfileDetails, updateProfileEditing } from 'Redux/Slice/Common.Slice'
+import images from "Utils/Image"
 
 const ProfileInfo = () => {
   const dispatch = useDispatch()
@@ -33,7 +34,7 @@ const ProfileInfo = () => {
         <div className="text-center mb-4">
           <div className="position-relative d-inline-block">
             <Image
-              src={profile_details?.profile_picture}
+              src={profile_details?.profile_picture || images?.default_profile_pic}
               roundedCircle
               width={120}
               height={120}
@@ -58,7 +59,7 @@ const ProfileInfo = () => {
             />
           </div>
 
-          <h3 className="mt-3 fw-bold">{`${profile_details?.user_name} ${profile_details?.last_name}`}</h3>
+          <h3 className="mt-3 fw-bold">{`${profile_details?.user_name || ''} ${profile_details?.last_name || ''}`}</h3>
         </div>
 
         <Form>

@@ -2,16 +2,15 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import { MdOutlineAccessTime } from 'react-icons/md';
 import { TfiLocationPin } from 'react-icons/tfi';
-import { Button } from 'react-bootstrap';
 import { IoMdStar } from 'react-icons/io';
 import { RiMoneyRupeeCircleLine } from 'react-icons/ri';
 import Image from 'Utils/Image';
-import { useCustomNavigate, useDispatch } from 'Components/CustomHooks';
+import { useCustomNavigate} from 'Components/CustomHooks';
 import ButtonComponent from 'Components/Button/Button';
 
 const TourCard = ({ tour,admin=false }) => {
   const navigate = useCustomNavigate()
-  const dispatch = useDispatch()
+
 
   const handleCardClick = () => {
     if(admin){
@@ -63,17 +62,11 @@ const TourCard = ({ tour,admin=false }) => {
               </div>
               <span className="text-secondary fs-6 fw-bold">547 reviews</span>
             </div>
-            
-            <Button variant="success" className="py-2" onClick={handleCardClick}>
-              <span className="fs-6 fw-bold">View More...</span>
-            </Button>
+            <ButtonComponent className="btn-success py-2" buttonName={<span className="fs-6 fw-bold">View More...</span>} clickFunction={handleCardClick} /> 
           </div>
         </Card.Footer> :
            <Card.Footer className="bg-white">
-           <div className="tourcard-footer d-flex flex-column flex-sm-row justify-content-sm-between justify-content-center align-items-center p-2 gap-2">
-              <ButtonComponent className='btn-outline-primary w-100 w-md-50 ' buttonName='Edit' clickFunction={()=> navigate(`/admin/packages/${tour._id}`)} />
-              <ButtonComponent className='btn-outline-danger w-100 w-md-50 ' buttonName='Delete' clickFunction={()=>console.log("tour?.id",tour?._id)} />
-           </div>
+           <ButtonComponent className="btn-success py-2 w-100" buttonName={<span className="fs-6 fw-bold">View More...</span>} clickFunction={handleCardClick} /> 
          </Card.Footer>
         
         }

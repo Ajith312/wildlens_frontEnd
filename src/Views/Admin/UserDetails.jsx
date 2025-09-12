@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { Card, Badge, Button, Image, Tab, Tabs } from 'react-bootstrap';
 import { FiMail, FiPhone, FiUser, FiCalendar, FiMapPin } from 'react-icons/fi';
+import { IoMdArrowRoundBack } from "react-icons/io";
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { useParams } from 'react-router-dom';
-import { useCommonState, useDispatch } from 'Components/CustomHooks';
+import { useCommonState, useCustomNavigate, useDispatch } from 'Components/CustomHooks';
 import { getSingleUserDetails } from 'Redux/Action/Admin.Action';
 import { format } from 'date-fns';
 import Images from "Utils/Image"
@@ -13,6 +14,7 @@ import JsonData from 'Utils/JsonData';
 const UserDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch()
+  const navigate = useCustomNavigate()
   const { selected_userdetails } = useCommonState()?.adminState
   const { bookingTableheadings,bookingTableKeys} = JsonData()?.jsonOnly
 
@@ -45,13 +47,16 @@ const UserDetails = () => {
     return <div className="container-fluid py-5 text-center">User not found</div>;
   }
 
-  const upcoming_details = selected_userdetails?.booking_details?.filter(tour => tour.tour_status == "pending")
+  const upcoming_details = selected_userdetails?.booking_details?.filter(tour => ["pending","confirmed"]?.includes(tour.tour_status))
   const completed_details = selected_userdetails?.booking_details?.filter(tour => tour.tour_status == "completed")
 
   return (
     <div className="container-fluid">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2>User Details</h2>
+         <div className='d-flex align-items-center justify-content-center'>
+                      <span className='align-items-center' onClick={()=>navigate('/admin/users')}><IoMdArrowRoundBack size={32} /></span>
+                       <h2 className='mb-0 '>User Details</h2>
+                  </div>
         <Button variant="outline-secondary">
           <BsThreeDotsVertical />
         </Button>

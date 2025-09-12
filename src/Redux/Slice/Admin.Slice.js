@@ -6,7 +6,10 @@ let initialState = {
     user_details:[],
     dropdown_tour_details:[],
     selected_userdetails:{},
-    booking_details:[],
+    booking_details:{
+        is_loading : false,
+        data:[]
+    },
     booking_filter_inputs:{
         search:"",
         status:"all",
@@ -22,10 +25,15 @@ let initialState = {
       booking_date: '',
       number_of_persons: 0,
       guide_required: false,
-      comments: ''
+      comments: '',
+      is_loading:false
     },
     show_modal:false,
-    selected_booking: {}
+    selected_booking: {},
+    enquiry_details:{
+        is_loading:false,
+        data:[]
+    }
     
 }
 
@@ -50,7 +58,19 @@ const adminSlice = createSlice({
             state.selected_userdetails = action.payload
         },
         updateBookingDetails:(state,action)=>{
-            state.booking_details = action.payload
+            const { type , data} = action.payload
+            switch(type){
+                case "request":
+                    state.booking_details.is_loading=true
+                    break;
+                case "response":
+                    state.booking_details.is_loading=false
+                    state.booking_details.data = data
+                    break;
+                case "failure":
+                    state.booking_details.is_loading=false
+                    break
+            }
         },
         update_booking_filter_inputs:(state,action)=>{
             const inputs = action.payload
@@ -74,7 +94,7 @@ const adminSlice = createSlice({
                 state.new_booking_inputs[key]=value
             })
         },
-        clear_new_booking_inputs:(state,action)=>{
+        clear_new_booking_inputs:(state)=>{
             state.new_booking_inputs = {
                 first_name: '',
                 last_name: '',
@@ -89,8 +109,43 @@ const adminSlice = createSlice({
         },
         update_selected_booking:(state,action)=>{
             state.selected_booking=action.payload
+        },
+        update_enquiry_details:(state,action)=>{
+            const {type,data } = action.payload
+            switch(type){
+                case "request":
+                    state.enquiry_details.is_loading=true
+                    break;
+                case "response":
+                    state.enquiry_details.is_loading=false
+                    state.enquiry_details.data=data
+                    break;
+                case "failure":
+                    state.enquiry_details.is_loading=false
+                    break
+            }
         }
 
+    },
+    extraReducers:(builder)=>{
+        builder
+        .addCase("common_slice/updateModalShow",(state,action)=>{
+            const {show} =  action.payload
+            if(!show){
+               state.new_booking_inputs = {
+                first_name: '',
+                last_name: '',
+                address: '',
+                user_id: '',
+                tour_id: '',
+                booking_date: '',
+                number_of_persons: 0,
+                guide_required: false,
+                comments: ''
+            }
+            }
+
+        })
     }
 })
 
@@ -104,7 +159,8 @@ export const {updateLoding,
     update_new_booking_inputs,
     update_show_modal,
     clear_new_booking_inputs,
-    update_selected_booking
+    update_selected_booking,
+    update_enquiry_details
  } = actions
 
 export default reducer

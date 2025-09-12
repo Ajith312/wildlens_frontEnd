@@ -1,5 +1,4 @@
 import React from 'react'
-
 import ButtonComponent from 'Components/Button/Button'
 import { useCustomNavigate } from 'Components/CustomHooks'
 
@@ -12,7 +11,7 @@ const NotFound = () => {
 
   return (
     <div className='d-flex justify-content-center align-items-center vh-100 text-center'>
-      <div>
+      <div className='d-flex flex-column justify-content-center align-items-center'>
         <h1>404 - Page Not Found</h1>
         <p>The page you're looking for doesn't exist.</p>
         <ButtonComponent

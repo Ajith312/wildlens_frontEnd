@@ -1,6 +1,7 @@
 import ButtonComponent from 'Components/Button/Button'
 import DashboardCard from 'Components/Card/DashboardCard'
 import { useCommonState, useDispatch } from 'Components/CustomHooks'
+import Spinner from 'Components/Spinner/CustomSpinner'
 import TableComp from 'Components/Table/TableComp'
 import React, { useEffect, useState } from 'react'
 import { Card, Col, Container, Form, InputGroup, Row } from 'react-bootstrap'
@@ -27,8 +28,7 @@ const Bookings = () => {
     if (!dropdown_tour_details || dropdown_tour_details.length === 0) {
       dispatch(getDropDownTourDetails())
     }
-
-  }, [dispatch])
+  }, [])
 
 
   const handleTabChange = (status) => {
@@ -58,7 +58,7 @@ const Bookings = () => {
       <Row className="mb-4 w-100">
         {bookingCards?.map((item, i) => (
           <Col key={i} xs={12} sm={6} lg={3} className="mb-3 mb-lg-0 p-2 d-flex">
-            <DashboardCard item={item} className="flex-fill" />
+            <DashboardCard item={item} className="flex-fill" is_loading={booking_details?.is_loading} />
           </Col>
         ))}
       </Row>
@@ -94,13 +94,16 @@ const Bookings = () => {
           </div>
 
           <section className='overflow-auto booking-table' style={{minHeight:"35vh"}}>
-              <TableComp
-                tableHeadings={tableHeadings}
-                tableData={booking_details?.details}
-                tableKeys={tableKeys}
-                showIndex={true}
-                showAction={true}
-              /> 
+              {booking_details?.is_loading ? <div className='my-4'>
+                <Spinner />
+              </div> :
+                <TableComp
+                  tableHeadings={tableHeadings}
+                  tableData={booking_details?.data?.details}
+                  tableKeys={tableKeys}
+                  showIndex={true}
+                  showAction={true}
+                />}
           </section>
         </Card.Body>
       </Card>
